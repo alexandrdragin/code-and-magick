@@ -22,10 +22,15 @@ NB! Всем cookies со значениями полей нужно указа�
   var allForm = document.querySelector('form .overlay review-form');
   console.log(allForm);
 
+// пытаюсь вытащить текст из форм
+  var input = document.body.querySelector('[type="text"]'),
+
 
 // сегодняшняя дата
   var MILLISECONDS_IN_DAY = 60 * 60 * 24 * 1000;
+
   var now = new Date();
+
   var cookiesLifeTime = now.getTime() + (30 * 365 * MILLISECONDS_IN_DAY);
 
   console.dir(cookiesLifeTime);
@@ -44,13 +49,15 @@ NB! Всем cookies со значениями полей нужно указа�
 
 валидация будет проходить по onchange,
 но что проверять если в отзыве данные могут быть любого типа?
-
+просто чтоб пустые не отровлялись?
+if (input.value == null) alert?
 
 
 
 это просто галка котороую в куки записать
 
-docCookies.setItem(?review-mark ?value);
+docCookies.setItem(?review-mark ?value; expires = cookiesLifeTime.toGMTString(););
+
 
 синтаксис не знаю вообщем как вытащить
 
