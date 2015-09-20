@@ -46,16 +46,16 @@ function check(form) {
   var reviewName = reviewName.value;
   var sReview = sReview.value;
   if (reviewName.length < 3)
-     bad += "Имя слишком короткое" + "\n";
+     bad = "Имя слишком короткое" + "\n";
   if (reviewName.length > 32)
-    bad += "Имя слишком длинное" + "\n";
+    bad = "Имя слишком длинное" + "\n";
   if (sReview.length < 3)
-    bad += "Напишите побольше пожалуйста" + "\n";
+    bad = "Напишите побольше пожалуйста" + "\n";
   if (sReview.length > 52)
-    bad += "Напишите поменше пожалуйста" + "\n";
+    bad = "Напишите поменше пожалуйста" + "\n";
 
   if (sReview.length === 0 || sReview === "ждем с нетерпением")
-    bad += "Вы забыли написать что хотели" + "\n";
+    bad = "Вы забыли написать что хотели" + "\n";
   if (reviewName.length === 0 || reviewName === "можно без фамилии") {
     bad = "имя забыли" + "\n" + bad;
     alert(bad);
@@ -74,16 +74,18 @@ var exDate = new Date(now.getTime() + (30 * 365 * 60 * 60 * 24 * 1000));
 
   console.dir(exDate.toUTCString());
 
-//document.cookie = radioVal + date.toUTCString();
-document.cookie = reviewName.value + exDate.toUTCString();
+//document.cookie = radioVal + exDate.toUTCString();
+document.cookie =  reviewName.value + exDate.toUTCString();
 
-//записывает не значение а name=reviewName;?????почему не пробел пустой
+//записывает пробел в куки и дату(работает но значениия не те)
 
-//  formElement.onsubmit = function(e) {
-//              e.preventDefault();
+// проверка отпаравки формы (не работает)
+allForm.onsubmit = function(e) {
+             e.preventDefault();
+             console.log("happen?")
 
-//  formElement.submit();
-//  };
+ formElement.submit();
+ };
 // потом еще их нужно будет достать наверно
 
 
