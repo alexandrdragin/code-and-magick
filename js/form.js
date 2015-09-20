@@ -20,12 +20,10 @@ NB! Всем cookies со значениями полей нужно указа�
 
 
 
-//нашел форму через DOM и пытаюсь ее вытащить целиком неуверен что работает
-  var allForm = document.querySelector('form .overlay review-form');
+//нашел форму через DOM и пытаюсь ее вытащить целиком
+//<form class="overlay review-form" action="index.html" method="post">
+  var allForm = document.querySelector('form.overlay.review-form');
   console.log(allForm);
-
-// пытаюсь вытащить текст из форм (неработает)
-//  input = document.body.querySelector('[type="text"]'),
 
 
 var reviewName = document.getElementById("review-name");
@@ -38,11 +36,14 @@ var sReview = document.getElementById("review-text");
 reviewName.value = " ";
 sReview.value = "ждем с нетерпением";
 
+
+
+
 // написал проверку отправки формы но незнаю как ее прикрутить
 
 //<button class="review-form-control review-submit" type="submut">Добавить отзыв</button>
 
-function check(form) {
+function check(allForm) {
   var reviewName = reviewName.value;
   var sReview = sReview.value;
   if (reviewName.length < 3)
@@ -64,7 +65,6 @@ function check(form) {
   return true;
 }
 
-//еще здесь должна быть запись в куки
 
 
 // сегодняшняя дата
@@ -77,20 +77,39 @@ var exDate = new Date(now.getTime() + (30 * 365 * 60 * 60 * 24 * 1000));
 //document.cookie = radioVal + exDate.toUTCString();
 document.cookie =  reviewName.value + exDate.toUTCString();
 
-//записывает пробел в куки и дату(работает но значениия не те)
 
-// проверка отпаравки формы (не работает)
-allForm.onsubmit = function(e) {
-             e.preventDefault();
-             console.log("happen?")
+/*
+не работает не знаю почему
 
- formElement.submit();
- };
+var element;
+for (var i = 0, l = allForm.elements.length; i < l; i++) {
+element = allForm.elements[i];
+
+//// записали кукуис
+docCookies.setItem(element.name, element.value);}
+// отправили форму
+allForm.submit();
+
+*/
+
+
+
+
+// проверка отправки формы (не работает)
+//allForm.onsubmit = function(e) {
+//             e.preventDefault();
+  //           console.log("happen?")
+
+// formElement.submit();
+// };
 // потом еще их нужно будет достать наверно
 
 
 
-/// работащщий код для теста(забивает в форму озыва содержание текта по клику)
+
+
+
+/// работащщий код для теста просто проверил имена им(забивает в форму озыва содержание текта по клику)
 
 var reviewName = document.getElementById("review-name")
 var checkReviewName = function(){
@@ -99,8 +118,6 @@ var checkReviewName = function(){
   };
 
   reviewName.addEventListener("click", checkReviewName);
-
-//reviewName.addEventListener("onchange", checkReviewName);
 /*
 
 синтаксис не знаю вообщем как вытащить радио и в куки записать какой из них чекнутый
