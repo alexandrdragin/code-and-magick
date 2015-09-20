@@ -18,6 +18,8 @@ NB! Всем cookies со значениями полей нужно указа�
   var formOpenButton = document.querySelector('.reviews-controls-new');
   var formCloseButton = document.querySelector('.review-form-close');
 
+
+
 //нашел форму через DOM и пытаюсь ее вытащить целиком неуверен что работает
   var allForm = document.querySelector('form .overlay review-form');
   console.log(allForm);
@@ -25,18 +27,19 @@ NB! Всем cookies со значениями полей нужно указа�
 // пытаюсь вытащить текст из форм (неработает)
 //  input = document.body.querySelector('[type="text"]'),
 
-//значения по умолчанию
+
 var reviewName = document.getElementById("review-name");
 var sReview = document.getElementById("review-text");
 
 //немогу получить значение радио... потому что их там 5?
 //var radioVal = document.getElementByClass("review-mark").value;
 
-
+//значения по умолчанию
 reviewName.value = " ";
 sReview.value = "ждем с нетерпением";
 
 // написал проверку отправки формы но незнаю как ее прикрутить
+
 //<button class="review-form-control review-submit" type="submut">Добавить отзыв</button>
 
 function check(form) {
@@ -61,11 +64,8 @@ function check(form) {
   return true;
 }
 
-//  formElement.onsubmit = function(e) {
-//              e.preventDefault();
+//еще здесь должна быть запись в куки
 
-//  formElement.submit();
-//  };
 
 // сегодняшняя дата
 
@@ -79,16 +79,12 @@ document.cookie = reviewName.value + exDate.toUTCString();
 
 //записывает не значение а name=reviewName;?????почему не пробел пустой
 
-/*
+//  formElement.onsubmit = function(e) {
+//              e.preventDefault();
 
-
-валидация будет проходить по onchange,
-но что проверять если в отзыве данные могут быть любого типа?
-просто чтоб пустые не отровлялись?
-if (input.value == null) alert?
-//if (reviewName != null)
-
-*/
+//  formElement.submit();
+//  };
+// потом еще их нужно будет достать наверно
 
 
 
