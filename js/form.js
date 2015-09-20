@@ -28,10 +28,13 @@ NB! Всем cookies со значениями полей нужно указа�
 
 // сегодняшняя дата
 
-  var now = new Date();
-  var cookiesLifeTime = now.getTime() + (30 * 365 * 60 * 60 * 24 * 1000);
+var now = new Date();  
+var date = new Date(now.getTime() + (30 * 365 * 60 * 60 * 24 * 1000));
 
-  console.dir(cookiesLifeTime);
+//  var date = new Date(new Date().getTime() + (30 * 365 * 60 * 60 * 24 * 1000));
+// document.cookie = "name=value; path=/; expires=" + date.toUTCString();
+
+  console.dir(date.toUTCString());
 
 //вернуть в другой формат
 
@@ -74,8 +77,8 @@ var checkReviewName = function(){
 //  var sName = document.getElementById("review-name").value;
 
   //запись в куки
-// docCookies.setItem(sName; expires = cookiesLifeTime.toGMTString(););
-//  docCookies.setItem(radioVal; expires = cookiesLifeTime.toGMTString(););
+// document.cookie.setItem(sName; expires = cookiesLifeTime.toGMTString(););
+//  document.cookie.setItem(radioVal; expires = cookiesLifeTime.toGMTString(););
 
 
 //  formElement.submit();
