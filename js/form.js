@@ -22,16 +22,14 @@ NB! Всем cookies со значениями полей нужно указа�
   var allForm = document.querySelector('form .overlay review-form');
   console.log(allForm);
 
-// пытаюсь вытащить текст из форм
-  var input = document.body.querySelector('[type="text"]'),
+// пытаюсь вытащить текст из форм (неработает)
+//  input = document.body.querySelector('[type="text"]'),
 
 
 // сегодняшняя дата
-  var MILLISECONDS_IN_DAY = 60 * 60 * 24 * 1000;
 
   var now = new Date();
-
-  var cookiesLifeTime = now.getTime() + (30 * 365 * MILLISECONDS_IN_DAY);
+  var cookiesLifeTime = now.getTime() + (30 * 365 * 60 * 60 * 24 * 1000);
 
   console.dir(cookiesLifeTime);
 
@@ -55,10 +53,17 @@ if (input.value == null) alert?
 */
 
 //коллбек по изменениию
+
+//if (reviewName != null)
+
+/// работащщий код для проверки имен(забивает в форму озыва текст по клику)
 var reviewName = document.getElementById("review-name")
 var checkReviewName = function(){
-  if ( reviewName != null) ????}
-reviewName.addEventListener("onchange", checkReviewName);
+   document.getElementById("review-text").textContent += "checkReviewName!";
+  };
+
+  reviewName.addEventListener("click", checkReviewName);
+//reviewName.addEventListener("onchange", checkReviewName);
 /*
 
 if ( reviewName != null && review-text != null) send form?????
@@ -81,8 +86,6 @@ docCookies.setItem(?review-mark ?value; expires = cookiesLifeTime.toGMTString();
        </span>
 
        */
-
-
 
 
 
