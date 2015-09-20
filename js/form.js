@@ -56,10 +56,11 @@ if (input.value == null) alert?
 
 //if (reviewName != null)
 
-/// работащщий код для проверки имен(забивает в форму озыва текст по клику)
+/// работащщий код для проверки имен(забивает в форму озыва содержание текта по клику)
 var reviewName = document.getElementById("review-name")
 var checkReviewName = function(){
-   document.getElementById("review-text").textContent += "checkReviewName!";
+   var sName = document.getElementById("review-name").value;
+   document.getElementById("review-text").textContent += sName;
   };
 
   reviewName.addEventListener("click", checkReviewName);
@@ -72,7 +73,11 @@ else not send
 
 это просто галка котороую в куки записать
 
-docCookies.setItem(?review-mark ?value; expires = cookiesLifeTime.toGMTString(););
+var radioVal = document.getElementByName("review-mark").value;
+
+//запись в куки
+docCookies.setItem(sName; expires = cookiesLifeTime.toGMTString(););
+docCookies.setItem(radioVal; expires = cookiesLifeTime.toGMTString(););
 
 
 синтаксис не знаю вообщем как вытащить
