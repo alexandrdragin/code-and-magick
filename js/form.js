@@ -38,7 +38,7 @@ NB! Всем cookies со значениями полей нужно указа�
 //вернуть в другой формат
 
 /*
-это(наверно) значение которые я нашел в DOMе и по задию
+это(наверно) значение которые я нашел в DOMе и по заданию
 
 
   <input type="text" name="review-name" id="review-name" class="review-form-field review-form-field-name">
@@ -52,6 +52,17 @@ NB! Всем cookies со значениями полей нужно указа�
 просто чтоб пустые не отровлялись?
 if (input.value == null) alert?
 
+*/
+
+//коллбек по изменениию
+var reviewName = document.getElementById("review-name")
+var checkReviewName = function(){
+  if ( reviewName != null) ????}
+reviewName.addEventListener("onchange", checkReviewName);
+/*
+
+if ( reviewName != null && review-text != null) send form?????
+else not send
 
 
 это просто галка котороую в куки записать
@@ -70,6 +81,9 @@ docCookies.setItem(?review-mark ?value; expires = cookiesLifeTime.toGMTString();
        </span>
 
        */
+
+
+
 
 
 
