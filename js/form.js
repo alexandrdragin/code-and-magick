@@ -18,87 +18,94 @@ NB! Всем cookies со значениями полей нужно указа�
   var formOpenButton = document.querySelector('.reviews-controls-new');
   var formCloseButton = document.querySelector('.review-form-close');
 
-//нашел форму через DOM и пытаюсь ее вытащить целиком
+//нашел форму через DOM и пытаюсь ее вытащить целиком неуверен что работает
   var allForm = document.querySelector('form .overlay review-form');
   console.log(allForm);
 
 // пытаюсь вытащить текст из форм (неработает)
 //  input = document.body.querySelector('[type="text"]'),
 
+//значения по умолчанию
+var reviewName = document.getElementById("review-name");
+var sReview = document.getElementById("review-text");
+
+//немогу получить значение радио... потому что их там 5?
+//var radioVal = document.getElementByClass("review-mark").value;
+
+
+reviewName.value = " ";
+sReview.value = "ждем с нетерпением";
+
+// написал проверку отправки формы но незнаю как ее прикрутить
+//<button class="review-form-control review-submit" type="submut">Добавить отзыв</button>
+
+function check(form) {
+  var reviewName = reviewName.value;
+  var sReview = sReview.value;
+  if (reviewName.length < 3)
+     bad += "Имя слишком короткое" + "\n";
+  if (reviewName.length > 32)
+    bad += "Имя слишком длинное" + "\n";
+  if (sReview.length < 3)
+    bad += "Напишите побольше пожалуйста" + "\n";
+  if (sReview.length > 52)
+    bad += "Напишите поменше пожалуйста" + "\n";
+
+  if (sReview.length === 0 || sReview === "ждем с нетерпением")
+    bad += "Вы забыли написать что хотели" + "\n";
+  if (reviewName.length === 0 || reviewName === "можно без фамилии") {
+    bad = "имя забыли" + "\n" + bad;
+    alert(bad);
+    return false;
+  }
+  return true;
+}
+
+//  formElement.onsubmit = function(e) {
+//              e.preventDefault();
+
+//  formElement.submit();
+//  };
 
 // сегодняшняя дата
 
-var now = new Date();  
-var date = new Date(now.getTime() + (30 * 365 * 60 * 60 * 24 * 1000));
+var now = new Date();
+var exDate = new Date(now.getTime() + (30 * 365 * 60 * 60 * 24 * 1000));
 
-//  var date = new Date(new Date().getTime() + (30 * 365 * 60 * 60 * 24 * 1000));
-// document.cookie = "name=value; path=/; expires=" + date.toUTCString();
+  console.dir(exDate.toUTCString());
 
-  console.dir(date.toUTCString());
+//document.cookie = radioVal + date.toUTCString();
+document.cookie = reviewName.value + exDate.toUTCString();
 
-//вернуть в другой формат
+//записывает не значение а name=reviewName;?????почему не пробел пустой
 
 /*
-это(наверно) значение которые я нашел в DOMе и по заданию
 
-
-  <input type="text" name="review-name" id="review-name" class="review-form-field review-form-field-name">
-и
-  <textarea name="review-text" id="review-text" class="review-form-field review-form-field-text" cols="32" rows="8"></textarea>
-
-но я не знаю как именно к ним обратиться
 
 валидация будет проходить по onchange,
 но что проверять если в отзыве данные могут быть любого типа?
 просто чтоб пустые не отровлялись?
 if (input.value == null) alert?
+//if (reviewName != null)
 
 */
 
-//коллбек по изменениию
 
-//if (reviewName != null)
 
-/// работащщий код для проверки имен(забивает в форму озыва содержание текта по клику)
+/// работащщий код для теста(забивает в форму озыва содержание текта по клику)
+
 var reviewName = document.getElementById("review-name")
 var checkReviewName = function(){
    var sName = document.getElementById("review-name").value;
-   document.getElementById("review-text").textContent += sName;
+   sReview.value += sName;
   };
 
   reviewName.addEventListener("click", checkReviewName);
 
-
-  //отмена отправки формы и запись формы(неработает)
-//  formElement.onsubmit = function(e) {
-//              e.preventDefault();
-
-//  var radioVal = document.getElementByName("review-mark").value;
-//  var sName = document.getElementById("review-name").value;
-
-  //запись в куки
-// document.cookie.setItem(sName; expires = cookiesLifeTime.toGMTString(););
-//  document.cookie.setItem(radioVal; expires = cookiesLifeTime.toGMTString(););
-
-
-//  formElement.submit();
-//  };
-
-
-
 //reviewName.addEventListener("onchange", checkReviewName);
 /*
 
-if ( reviewName != null && review-text != null) send form?????
-else not send
-
-
-это просто галка котороую в куки записать
-//
-
-
-
-синтаксис не знаю вообщем как вытащить
+синтаксис не знаю вообщем как вытащить радио и в куки записать какой из них чекнутый
 
   <span class="review-form-label">Оценка<br>
          <input type="radio" name="review-mark" id="review-mark-5" value="5"><label class="review-mark-label review-mark-label-5" for="review-mark-5">1</label>
