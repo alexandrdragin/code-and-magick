@@ -64,6 +64,25 @@ var checkReviewName = function(){
   };
 
   reviewName.addEventListener("click", checkReviewName);
+
+
+  //отмена отправки формы и запись формы(неработает)
+//  formElement.onsubmit = function(e) {
+//              e.preventDefault();
+
+//  var radioVal = document.getElementByName("review-mark").value;
+//  var sName = document.getElementById("review-name").value;
+
+  //запись в куки
+// docCookies.setItem(sName; expires = cookiesLifeTime.toGMTString(););
+//  docCookies.setItem(radioVal; expires = cookiesLifeTime.toGMTString(););
+
+
+//  formElement.submit();
+//  };
+
+
+
 //reviewName.addEventListener("onchange", checkReviewName);
 /*
 
@@ -72,12 +91,8 @@ else not send
 
 
 это просто галка котороую в куки записать
+//
 
-var radioVal = document.getElementByName("review-mark").value;
-
-//запись в куки
-docCookies.setItem(sName; expires = cookiesLifeTime.toGMTString(););
-docCookies.setItem(radioVal; expires = cookiesLifeTime.toGMTString(););
 
 
 синтаксис не знаю вообщем как вытащить
