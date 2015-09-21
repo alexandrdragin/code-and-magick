@@ -30,9 +30,6 @@ var radioVal = document.querySelector('input[name="review-mark"]:checked').value
 
 //значения по умолчанию
 
-
-console.log(radioVal);
-
 reviewName = docCookies.getItem("reviewNameCook");
 radioVal = docCookies.getItem("radioValCook");
 
@@ -73,9 +70,6 @@ allForm.onsubmit = function(event) {
   var now = new Date();
   var exDate = new Date(now.getTime() + (30 * 365 * 60 * 60 * 24 * 1000));
 
-    console.dir(exDate.toUTCString());
-
-    //// записали кукуис
 
 function setCookieFun (name, value, expires) {
         document.cookie = name + "=" + escape(value) +
@@ -86,6 +80,7 @@ setCookieFun("radioValCook", "radioVal.value", "exDate.toUTCString()");
 setCookieFun("reviewNameCook", "reviewName.value", "exDate.toUTCString()");
 
 // записывает в куки содержание как radioValCook=radioVal.value а не как цифру(
+return check();
 allForm.submit();
 
 }
