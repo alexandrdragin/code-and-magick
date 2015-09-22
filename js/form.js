@@ -17,89 +17,71 @@ NB! Всем cookies со значениями полей нужно указа�
   var formContainer = document.querySelector('.overlay-container');
   var formOpenButton = document.querySelector('.reviews-controls-new');
   var formCloseButton = document.querySelector('.review-form-close');
+  var reviewForm = document.querySelector('.review-form');
+  var reviewName = document.getElementById('review-name');
+  var reviewText = document.getElementById('review-text');
 
+  //значения по умолчанию
+  // reviewName = docCookies.getItem('reviewNameCook');
+  // radioVal = docCookies.getItem('radioValCook');
 
-
-var allForm = document.querySelector('form.overlay.review-form');
-console.log(allForm);
-
-
-var reviewName = document.getElementById("review-name");
-var sReview = document.getElementById("review-text");
-var radioVal = document.querySelector('input[name="review-mark"]:checked').value;
-
-//значения по умолчанию
-
-reviewName = docCookies.getItem("reviewNameCook");
-radioVal = docCookies.getItem("radioValCook");
-
-console.log(radioVal);
-console.log(reviewName);
-
-// написал проверку отправки формы но незнаю как ее прикрутить
-
-allForm.onsubmit = function(event) {
-            e.preventDefault();
-           console.log("happened")
-
-  function check(allForm) {
-    var reviewName = reviewName.value;
-    var sReview = sReview.value;
-    var go = false;
-    if (reviewName.length < 3)
-       bad = "Имя слишком короткое" + "\n";
-    if (reviewName.length > 32)
-      bad = "Имя слишком длинное" + "\n";
-    if (sReview.length < 3)
-      bad = "Напишите побольше пожалуйста" + "\n";
-    if (sReview.length > 52)
-      bad = "Напишите поменше пожалуйста" + "\n";
-
-    if (sReview.length === 0 || sReview === " ")
-      bad = "Вы забыли написать что хотели" + "\n";
-    if (reviewName.length === 0 || reviewName === " ") {
-      bad = "имя забыли" + "\n" + bad;
-      alert(bad);
-      go = false;
-    }
-    go = true;
+  function setCookieFun(name, value, expires) {
+    document.cookie = name + "=" + escape(value) + ((expires) ? "; expires=" + expires : "");
   }
 
+  function validateForm() {
+    var reviewNameValue = reviewName.value;
+    var reviewTextValue = reviewText.value;
+    var reviewScoreValue = reviewForm.querySelector('input[name="review-mark"]:checked').value;
+    var bad = [];
+    if (reviewNameValue.length < 3) {
+      bad.push('Имя слишком короткое');
+    }
+    if (reviewNameValue.length > 32) {
+      bad.push('Имя слишком длинное');
+    }
+    if (reviewTextValue.length < 3) {
+      bad.push('Напишите побольше пожалуйста');
+    }
+    if (reviewTextValue.length > 52) {
+      bad.push('Напишите поменьше пожалуйста');
+    }
+    if (reviewTextValue.length === 0 || reviewTextValue === " ") {
+      bad.push('Вы забыли написать что хотели');
+    }
+    if (reviewNameValue.length === 0 || reviewNameValue === " ") {
+      bad.push('имя забыли');
+      alert(bad.join('\n'));
+    }
 
+    return !bad.length
+  }
 
-  var now = new Date();
-  var exDate = new Date(now.getTime() + (30 * 365 * 60 * 60 * 24 * 1000));
+  // написал проверку отправки формы но незнаю как ее прикрутить
+  reviewForm.onsubmit = function(e) {
+    e.preventDefault();
+    var now = new Date();
+    var exDate = new Date(now.getTime() + (30 * 365 * 60 * 60 * 24 * 1000));
+    var currentScore = reviewForm.querySelector('input[name="review-mark"]:checked').value;
+    var currentName = reviewName.value;
+    setCookieFun('radioValCook', currentScore, 'exDate.toUTCString()');
+    setCookieFun('reviewNameCook', currentName, 'exDate.toUTCString()');
+    var isValid = validateForm();
+    if (isValid) {
+      formContainer.classList.add('invisible');
+    }
+  }
 
-
-function setCookieFun (name, value, expires) {
-        document.cookie = name + "=" + escape(value) +
-          ((expires) ? "; expires=" + expires : "");
-  };
-
-setCookieFun("radioValCook", "radioVal.value", "exDate.toUTCString()");
-setCookieFun("reviewNameCook", "reviewName.value", "exDate.toUTCString()");
-
-// записывает в куки содержание как radioValCook=radioVal.value а не как цифру(
-return check();
-allForm.submit();
-
-}
-//
-
-
-
-//появление формы
+  //появление формы
   formOpenButton.onclick = function(evt) {
     evt.preventDefault();
     formContainer.classList.remove('invisible');
   };
 
-// скрытие формы
+  // скрытие формы
   formCloseButton.onclick = function(evt) {
     evt.preventDefault();
     formContainer.classList.add('invisible');
   };
-
-
 
 })();
