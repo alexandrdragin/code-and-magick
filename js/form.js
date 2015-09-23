@@ -22,26 +22,23 @@ reviewName.value = docCookies.getItem('reviewNameCook');
 
 
 function validateForm() {
-var reviewNameValue = reviewName.value;
-var reviewTextValue = reviewText.value;
-var reviewScoreValue = reviewForm.querySelector('input[name="review-mark"]:checked').value;
 var bad = [];
-if (reviewNameValue.length < 3) {
+if (reviewName.length < 3) {
     bad.push('Имя слишком короткое');
     }
-    if (reviewNameValue.length > 32) {
+    if (reviewName.length > 32) {
       bad.push('Имя слишком длинное');
     }
-    if (reviewTextValue.length < 3) {
+    if (reviewText.length < 3) {
     bad.push('Напишите побольше пожалуйста');
     }
-    if (reviewTextValue.length > 52) {
+    if (reviewText.length > 52) {
       bad.push('Напишите поменьше пожалуйста');
    }
-    if (reviewTextValue.length === 0 || reviewTextValue === " ") {
+    if (reviewText.length === 0 || reviewText === " ") {
       bad.push('Вы забыли написать что хотели');
     }
-    if (reviewNameValue.length === 0 || reviewNameValue === " ") {
+    if (reviewName.length === 0 || reviewName === " ") {
       bad.push('имя забыли');
       alert(bad.join('\n'));
     }
