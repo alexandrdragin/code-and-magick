@@ -18,12 +18,12 @@ reviewText.required = true;
 
 
 if (reviewName.length > 1) {
-  var reviewFieldsName = document.getElementsByClassName('review-fields-label review-fields-name');
+  var reviewFieldsName = document.getElementsByClassName('review-fields-name');
   reviewFieldsName.style.display = "display";
 };
 
 if (reviewText.length > 1) {
-var reviewFieldsText = document.getElementsByClassName('review-fields-label review-fields-text');
+var reviewFieldsText = document.getElementsByClassName('review-fields-text');
 reviewFieldsText.style.display = "none";
 };
 

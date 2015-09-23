@@ -106,48 +106,17 @@ allForm.submit();
 /////////////////////////////////////////////////////
 
 
-var reviewScoreValue = reviewForm.querySelector('input[name="review-mark"]:checked').value;
-
-
-function setCookieFun (name, value, expires) {
-document.cookie = name + "=" + escape(value) + ((expires) ? "; expires=" + expires : "");
-};
-
-reviewScoreValue.value = docCookies.getItem('radioValCook');
-reviewName.value = docCookies.getItem('reviewNameCook');
 
 
 
 
-      reviewForm.onsubmit = function(e) {
-      e.preventDefault();
-      var now = new Date();
-      var exDate = new Date(now.getTime() + (30 * 365 * 60 * 60 * 24 * 1000));
-
-      var reviewScoreValue = reviewForm.querySelector('input[name="review-mark"]:checked').value;
-      var currentName = reviewName.value;
-
-          setCookieFun('radioValCook', reviewScoreValue.value, 'exDate.toUTCString()');
-          setCookieFun('reviewNameCook', currentName, 'exDate.toUTCString()');
-          }
 
 
 
-document.getElementById('review-name').attributes["required"] = "";
-document.getElementById('review-text').attributes["required"] = "";
+    
 
 
 
-      if (reviewName.length > 0) {
-        var reviewFieldsName = document.getElementsByClassName('review-fields-name');
-        reviewFieldsName.style.visibility = "hidden";
-  };
-
-
-      if (reviewText.length > 0) {
-      var reviewFieldsText = document.getElementsByClassName('review-fields-text');
-      reviewFieldsText.style.visibility = "hidden";
-      };
 
 
 
