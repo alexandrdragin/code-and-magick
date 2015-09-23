@@ -21,8 +21,6 @@ NB! Всем cookies со значениями полей нужно указа�
 
 
 var allForm = document.querySelector('form.overlay.review-form');
-console.log(allForm);
-
 
 var reviewName = document.getElementById("review-name");
 var sReview = document.getElementById("review-text");
@@ -59,6 +57,7 @@ allForm.onsubmit = function(event) {
       bad = "Вы забыли написать что хотели" + "\n";
     if (reviewName.length === 0 || reviewName === " ") {
       bad = "имя забыли" + "\n" + bad;
+
       alert(bad);
       go = false;
     }
@@ -80,6 +79,8 @@ setCookieFun("radioValCook", "radioVal.value", "exDate.toUTCString()");
 setCookieFun("reviewNameCook", "reviewName.value", "exDate.toUTCString()");
 
 // записывает в куки содержание как radioValCook=radioVal.value а не как цифру(
+
+
 return check();
 allForm.submit();
 
