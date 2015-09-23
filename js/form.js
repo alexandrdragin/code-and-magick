@@ -21,9 +21,32 @@ reviewScoreValue.value = docCookies.getItem('radioValCook');
 reviewName.value = docCookies.getItem('reviewNameCook');
 
 
-function validateForm() {}
-
-
+function validateForm() {
+var reviewNameValue = reviewName.value;
+var reviewTextValue = reviewText.value;
+var reviewScoreValue = reviewForm.querySelector('input[name="review-mark"]:checked').value;
+var bad = [];
+if (reviewNameValue.length < 3) {
+    bad.push('Имя слишком короткое');
+    }
+    if (reviewNameValue.length > 32) {
+      bad.push('Имя слишком длинное');
+    }
+    if (reviewTextValue.length < 3) {
+    bad.push('Напишите побольше пожалуйста');
+    }
+    if (reviewTextValue.length > 52) {
+      bad.push('Напишите поменьше пожалуйста');
+   }
+    if (reviewTextValue.length === 0 || reviewTextValue === " ") {
+      bad.push('Вы забыли написать что хотели');
+    }
+    if (reviewNameValue.length === 0 || reviewNameValue === " ") {
+      bad.push('имя забыли');
+      alert(bad.join('\n'));
+    }
+    return !bad.length
+  }
 
 
     reviewForm.onsubmit = function(e) {
@@ -44,13 +67,10 @@ function validateForm() {}
           if (isValid) {formContainer.classList.add('invisible');}
 
 
-
-
       if (reviewName.length > 0) {
         var reviewFieldsName = document.getElementsByClassName('review-fields-name');
         reviewFieldsName.style.visibility = "hidden";
-
-      };
+  };
 
 
       if (reviewText.length > 0) {
