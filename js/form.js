@@ -19,7 +19,7 @@ reviewText.required = true;
 
 if (reviewName.length > 1) {
   var reviewFieldsName = document.getElementsByClassName('review-fields-name');
-  reviewFieldsName.style.display = "display";
+  reviewFieldsName.style.visibility = "hidden";
 };
 
 if (reviewText.length > 1) {
