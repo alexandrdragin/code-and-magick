@@ -8,6 +8,7 @@ var formCloseButton = document.querySelector('.review-form-close');
 
 
 var reviewForm = document.querySelector('.review-form');
+
 var reviewName = document.getElementById('review-name');
 var reviewText = document.getElementById('review-text');
 var reviewScoreValue = reviewForm.querySelector('input[name="review-mark"]:checked').value;
@@ -17,15 +18,35 @@ reviewName.required = true;
 reviewText.required = true;
 
 
+
+function checkValues() {
+
 if (reviewName.length > 1) {
-  var reviewFieldsName = document.getElementsByClassName('review-fields-name');
-  reviewFieldsName.style.visibility = "hidden";
-};
+  var reviewFieldsName = document.getElementsByClassName('review-fields-name')[0];
+  //reviewFieldsName.style.visibility = "hidden";
+  reviewFieldsName.classList.add('invisible');
+} else {
+      reviewFieldsName.classList.remove('invisible');
+    }
+;
 
 if (reviewText.length > 1) {
-var reviewFieldsText = document.getElementsByClassName('review-fields-text');
-reviewFieldsText.style.display = "none";
+var reviewFieldsText = document.getElementsByClassName('review-fields-text')[0];
+reviewFieldsText.classList.add('invisible');
+//reviewFieldsText.style.display = "none";
+} else {
+     reviewFieldsText.classList.remove('invisible');
+   };
 };
+
+reviewName.onchange = function() {
+  checkValues();
+};
+
+reviewText.onchange = function() {
+  checkValues();
+};
+
 
 
 
