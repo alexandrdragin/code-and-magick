@@ -68,6 +68,8 @@ newReviewDot.querySelector('.review-rating').classList.add(ratingClass[reviews['
 newReviewDot.querySelector('.review-text').textContent = review['description'];
 
 /*
+ //неработает, незнаю как добиться до содержания
+
 review['author'].forEach(function(author, i){
 var authorElement = document.createElement('div');
 authorElement.textContent = author['name'];
@@ -87,6 +89,7 @@ if (reviews['picture']) {
 }
 
 /*
+//неработает, говорит  Cannot set property 'onload' of undefined
       reviewBackground.onload = function() {
         newReviewDot.style.backgroundImage = 'url(\'' + reviewBackground.src + '\')';
         newReviewDot.style.height = "125";
@@ -109,7 +112,7 @@ reviewContainer.appendChild(reviewsFragment);
 
 
 
-
+//неработает
 reviewForm.className.remove = "invisible";
 
 
