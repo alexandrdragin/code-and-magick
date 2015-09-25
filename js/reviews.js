@@ -29,7 +29,7 @@ var hide = function(){
 
 
 // почему этоти методы не работает????
-var reviewsFilter = document.getElementsByClassName('reviews-filter');
+var reviewsFilter = document.getElementsByClassName('.reviews-filter');
 reviewsFilter.className += "invisible";
 //reviewsFilter.classList.add("invisible");
 
@@ -43,7 +43,7 @@ reviewsFilter.className += "invisible";
 var reviewForm = document.querySelector('.reviews-filter');
 reviewForm.className = "invisible";
 //reviewForm.classList.add("invisible");
-
+var reviewList = document.querySelector('.reviews-list');
 
 
 var ratingClass = {
@@ -70,7 +70,7 @@ newReviewDot.querySelector('.review-text').textContent = review['description'];
 /*
  //неработает, незнаю как добиться до содержания
 
-review['author'].forEach(function(author, i){
+review['author']['name'].forEach(function(author){
 var authorElement = document.createElement('div');
 authorElement.textContent = author['name'];
 authorElement.className = "picture";
@@ -81,7 +81,7 @@ authorContainer.appendChild(authorElement);
 
 
 
-reviewsFragment.appendChild(newReviewDot);
+reviewList.appendChild(newReviewDot);
 
 if (reviews['picture']) {
   var reviewBackground = new Image();
