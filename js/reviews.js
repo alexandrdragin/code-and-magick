@@ -11,7 +11,7 @@ Cоздаёт для каждой записи массива reviews блок �
 Все изображения создаёт с помощью new Image() и добавляет им обработчики загрузки и ошибки
 
 Обработчик загрузки: после загрузки изображения замените им изображение, находящееся в шаблоне с помощью Element.replaceChild и укажите размеры 124×124.
-
+(непонял что нужно)
 Обработчик ошибки: добавьте блоку отзыва .review класс review-load-failure.
 
 Отображает блок с фильтрами.*/
@@ -74,27 +74,33 @@ reviewsFragment.appendChild(newReviewData);
 
 //reviewList.appendChild(newReviewData);
 
-if (reviews['picture']) {
-  var reviewBackground = new Image();
-  reviewBackground.src = review['author']['picture'];
-}
+//Cannot read property 'picture' of undefined
+/* обработчик загрузки
 
-/*
-//неработает, говорит  Cannot set property 'onload' of undefined
-      reviewBackground.onload = function() {
-        newReviewDot.style.backgroundImage = 'url(\'' + reviewBackground.src + '\')';
-        newReviewDot.style.height = "125";
-        reviewBackground.replaceChild;
+if (reviews['author']['picture']) {
+
+  var reviewpicture = new Image();
+  reviewpicture.src = review['author']['picture'];
+
+
+
+
+      reviewpicture.onload = function() {
+        newReviewData.style.height = "125";
+        reviewpicture.replaceChild();
       }
 
-      reviewBackground.onerror = function(evt) {
-        newReviewDot.classList.add('review-load-failure');
+      reviewpicture.onerror = function(evt) {
+        newReviewData.classList.add('review-load-failure');
       };
 
 
+  };
 
 
 */
+
+
 
 
 
