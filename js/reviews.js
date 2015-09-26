@@ -18,39 +18,21 @@ Cоздаёт для каждой записи массива reviews блок �
 
 
 
-var reviewsTitle = document.querySelectorAll("h2 .section-title reviews-title")
-
-var hide = function(){
-  reviewsTitle.style.display = "none";
-
-//?????
-};
-//hide();
-
-
 // почему этоти методы не работает????
 var reviewsFilter = document.getElementsByClassName('.reviews-filter');
 reviewsFilter.className += "invisible";
 //reviewsFilter.classList.add("invisible");
 
 
-
-
-
-
-
-
 var reviewForm = document.querySelector('.reviews-filter');
 reviewForm.className = "invisible";
 //reviewForm.classList.add("invisible");
+//reviewForm.style.display = "none";
+
+
+
+
 var reviewList = document.querySelector('.reviews-list');
-
-var authorClassName = {
-    'name': 'review-form-field-name',
-    'picture': 'review-author',
-
-  };
-
 
 var ratingClass = {
 '1': 'review-rating-one',
@@ -60,38 +42,41 @@ var ratingClass = {
 '5': 'review-rating-five',
 };
 
-
+//контейнер и шаблон для вставки данных
 var reviewContainer = document.querySelector('.reviews-list')
 var reviewTemplate = document.getElementById('review-template')
 
+//фрагмент для ускорения загрузки
 var reviewsFragment = document.createDocumentFragment();
 
+//массив для иттерации
 reviews.forEach(function(review, i){
-  var newReviewDot = reviewTemplate.content.children[0].cloneNode(true);
 
-newReviewDot.querySelector('.review-author').textContent = review['name'];
-newReviewDot.querySelector('.review-rating').classList.add(ratingClass[reviews['rating']]);
-newReviewDot.querySelector('.review-text').textContent = review['description'];
+  //кланирование шаблона на каждой иттерации
+  var newReviewData = reviewTemplate.content.children[0].cloneNode(true);
 
-/*
- //неработает, незнаю как добиться до содержания
 
-review['author'].forEach(function(authorClassName){
-var authorElement = document.createElement('div');
-authorElement.textContent = author['name'];
-authorElement.className = "picture";
+newReviewData.querySelector('.review-rating').classList.add(ratingClass[review['rating']]);
+newReviewData.querySelector('.review-text').textContent = review['description'];
+newReviewData.querySelector('.review-author').src = review['author']['picture'];
+newReviewData.querySelector('.review-author').title = review['author']['name'];
 
-authorContainer.appendChild(authorElement);
+//newReviewData.querySelector('.review-name').textContent = review['author']['name'];
+
+//<img src="" class="review-author" alt="" title="" />
+
+
+//загрузка во фрагмент
+reviewsFragment.appendChild(newReviewData);
 });
-*/
 
 
 
-reviewList.appendChild(newReviewDot);
+//reviewList.appendChild(newReviewData);
 
 if (reviews['picture']) {
   var reviewBackground = new Image();
-  reviewBackground.src = reviews['picture'];
+  reviewBackground.src = review['author']['picture'];
 }
 
 /*
@@ -112,8 +97,8 @@ if (reviews['picture']) {
 */
 
 
-});
 
+//загрузка фрагметна
 reviewContainer.appendChild(reviewsFragment);
 
 
@@ -122,7 +107,9 @@ reviewContainer.appendChild(reviewsFragment);
 
 
 
-//неработает
+//неработает хотя добавил этим методом
+
 reviewForm.className.remove = "invisible";
 
-reviewForm.classList.remove('invisible');
+//работает незнаю почему
+//reviewForm.classList.remove('invisible');
