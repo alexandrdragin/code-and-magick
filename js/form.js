@@ -11,6 +11,7 @@ var reviewForm = document.querySelector('.review-form');
 
 var reviewName = document.getElementById('review-name');
 var reviewText = document.getElementById('review-text');
+
 var reviewScoreValue = reviewForm.querySelector('input[name="review-mark"]:checked').value;
 
 
@@ -22,20 +23,29 @@ reviewText.required = true;
 function checkValues() {
 
 if (reviewName.length > 1) {
-  var reviewFieldsName = document.getElementsByClassName('review-fields-name')[0];
+  var reviewNameLabel = document.getElementsByClassName('review-fields-name')[0];
+//  reviewNameLabel.classList.add('invisible');
+  reviewNameLabel.className = "invisible";
+     } else {
+       reviewNameLabel.className = " "
+      // reviewNameLabel.classList.remove('invisible');
+ }
+
   //reviewFieldsName.style.visibility = "hidden";
-  reviewFieldsName.classList.add('invisible');
-} else {
-      reviewFieldsName.classList.remove('invisible');
-    }
+//  reviewFieldsName.className = "invisible"
+//} else {
+//      reviewFieldsName.classList.remove('invisible');
+//    }
 ;
 
 if (reviewText.length > 1) {
 var reviewFieldsText = document.getElementsByClassName('review-fields-text')[0];
-reviewFieldsText.classList.add('invisible');
+//reviewFieldsText.classList.add('invisible');
 //reviewFieldsText.style.display = "none";
+reviewFieldsText.className = "invisible";
 } else {
-     reviewFieldsText.classList.remove('invisible');
+    // reviewFieldsText.classList.remove('invisible');
+     reviewNameLabel.className = " " ;
    };
 };
 

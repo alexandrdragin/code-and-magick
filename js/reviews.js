@@ -45,6 +45,12 @@ reviewForm.className = "invisible";
 //reviewForm.classList.add("invisible");
 var reviewList = document.querySelector('.reviews-list');
 
+var authorClassName = {
+    'name': 'review-form-field-name',
+    'picture': 'review-author',
+
+  };
+
 
 var ratingClass = {
 '1': 'review-rating-one',
@@ -70,7 +76,7 @@ newReviewDot.querySelector('.review-text').textContent = review['description'];
 /*
  //неработает, незнаю как добиться до содержания
 
-review['author']['name'].forEach(function(author){
+review['author'].forEach(function(authorClassName){
 var authorElement = document.createElement('div');
 authorElement.textContent = author['name'];
 authorElement.className = "picture";
@@ -99,6 +105,10 @@ if (reviews['picture']) {
       reviewBackground.onerror = function(evt) {
         newReviewDot.classList.add('review-load-failure');
       };
+
+
+
+
 */
 
 
@@ -115,21 +125,4 @@ reviewContainer.appendChild(reviewsFragment);
 //неработает
 reviewForm.className.remove = "invisible";
 
-
-
-
-
-/*
-<template id="review-template">
-  <article class="review">
-    <img src="" class="review-author" alt="" title="" />
-    <span class="review-rating"></span>
-    <p class="review-text"></p>
-    <div class="review-quiz">
-      Полезный отзыв?
-      <span class="review-quiz-answer">Да</span>
-      <span class="review-quiz-answer">Нет</span>
-    </div>
-  </article>
-</template>
-*/
+reviewForm.classList.remove('invisible');
