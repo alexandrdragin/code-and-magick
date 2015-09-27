@@ -21,14 +21,13 @@ http://212.myftp.org:8080/
 
 */
 
-
-
 // почему этоти методы не работает????
 var reviewsFilter = document.getElementsByClassName('.reviews-filter');
 reviewsFilter.className += "invisible";
 //reviewsFilter.classList.add("invisible");
 
 
+//>>Прячет блок с фильтрами .reviews-filter, добавляя ему класс invisible.
 var reviewForm = document.querySelector('.reviews-filter');
 reviewForm.className = "invisible";
 //reviewForm.classList.add("invisible");
@@ -60,22 +59,14 @@ reviews.forEach(function(review, i){
   //кланирование шаблона на каждой иттерации
   var newReviewData = reviewTemplate.content.children[0].cloneNode(true);
 
-
 newReviewData.querySelector('.review-rating').classList.add(ratingClass[review['rating']]);
 newReviewData.querySelector('.review-text').textContent = review['description'];
 newReviewData.querySelector('.review-author').src = review['author']['picture'];
 newReviewData.querySelector('.review-author').title = review['author']['name'];
 
-//newReviewData.querySelector('.review-name').textContent = review['author']['name'];
-
-//<img src="" class="review-author" alt="" title="" />
-
-
 //загрузка во фрагмент
 reviewsFragment.appendChild(newReviewData);
 });
-
-
 
 //reviewList.appendChild(newReviewData);
 
@@ -85,41 +76,22 @@ reviewsFragment.appendChild(newReviewData);
 if (reviews['author']['picture']) {
 
   var reviewpicture = new Image();
-  reviewpicture.src = review['author']['picture'];
-
-
-
-
-      reviewpicture.onload = function() {
-        newReviewData.style.height = "125";
-        reviewpicture.replaceChild();
+        reviewpicture.onload = function() {
+        newReviewData.querySelector('.review-author').style.height = "125";
+        newReviewData.querySelector('.review-author').replaceChild();
       }
-
-      reviewpicture.onerror = function(evt) {
-        newReviewData.classList.add('review-load-failure');
-      };
-
-
-  };
-
-
+}
 */
 
-
-
-
+//>>>Обработчик ошибки: добавьте блоку отзыва .review класс review-load-failure.
+reviewContainer.onerror = function(evt) {
+reviewContainer.classList.add('review-load-failure');}
 
 //загрузка фрагметна
 reviewContainer.appendChild(reviewsFragment);
 
 
-
-
-
-
-
 //неработает хотя добавил этим методом
-
 reviewForm.className.remove = "invisible";
 
 //работает незнаю почему
