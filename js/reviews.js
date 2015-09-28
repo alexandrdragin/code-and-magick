@@ -1,19 +1,12 @@
 /*Задача
-
 Напишите модуль инициализации списка отзывов, который:
-
 Прячет блок с фильтрами .reviews-filter, добавляя ему класс invisible.
-
 Cоздаёт для каждой записи массива reviews блок отзыва на основе шаблона #review-template. Шаблон находится в index.html.
-
 Выводит созданные элементы на страницу внуть блока .reviews-list, используя DocumentFragment.
-
 Все изображения создаёт с помощью new Image() и добавляет им обработчики загрузки и ошибки
-
 Обработчик загрузки: после загрузки изображения замените им изображение, находящееся в шаблоне с помощью Element.replaceChild и укажите размеры 124×124.
 (непонял что нужно)
 Обработчик ошибки: добавьте блоку отзыва .review класс review-load-failure.
-
 Отображает блок с фильтрами.
 
 проверка
@@ -21,20 +14,10 @@ http://212.myftp.org:8080/
 
 */
 
-// почему этоти методы не работает????
-var reviewsFilter = document.getElementsByClassName('.reviews-filter');
-reviewsFilter.className += "invisible";
-//reviewsFilter.classList.add("invisible");
-
-
 //>>Прячет блок с фильтрами .reviews-filter, добавляя ему класс invisible.
 var reviewForm = document.querySelector('.reviews-filter');
-reviewForm.className = "invisible";
-//reviewForm.classList.add("invisible");
+reviewForm.classList.add("invisible");
 //reviewForm.style.display = "none";
-
-
-
 
 var reviewList = document.querySelector('.reviews-list');
 
@@ -61,8 +44,22 @@ reviews.forEach(function(review, i){
 
 newReviewData.querySelector('.review-rating').classList.add(ratingClass[review['rating']]);
 newReviewData.querySelector('.review-text').textContent = review['description'];
-newReviewData.querySelector('.review-author').src = review['author']['picture'];
 newReviewData.querySelector('.review-author').title = review['author']['name'];
+
+var authorImages = newReviewData.querySelector('.review-author');
+var tempImages = new Image();
+tempImages.onload = function() {
+authorImages.src = review['author']['picture'];
+authorImages.width = 124;
+authorImages.height = 124;
+};
+
+tempImages.onerror = function() {
+authorImages.remove();
+};
+
+tempImages.src = review['author']['picture'];
+
 
 //загрузка во фрагмент
 reviewsFragment.appendChild(newReviewData);
@@ -70,18 +67,6 @@ reviewsFragment.appendChild(newReviewData);
 
 //reviewList.appendChild(newReviewData);
 
-//Cannot read property 'picture' of undefined
-/* обработчик загрузки
-
-if (reviews['author']['picture']) {
-
-  var reviewpicture = new Image();
-        reviewpicture.onload = function() {
-        newReviewData.querySelector('.review-author').style.height = "125";
-        newReviewData.querySelector('.review-author').replaceChild();
-      }
-}
-*/
 
 //>>>Обработчик ошибки: добавьте блоку отзыва .review класс review-load-failure.
 reviewContainer.onerror = function(evt) {
@@ -91,8 +76,4 @@ reviewContainer.classList.add('review-load-failure');}
 reviewContainer.appendChild(reviewsFragment);
 
 
-//неработает хотя добавил этим методом
-reviewForm.className.remove = "invisible";
-
-//работает незнаю почему
-//reviewForm.classList.remove('invisible');
+reviewForm.classList.remove('invisible');

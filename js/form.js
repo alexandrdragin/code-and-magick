@@ -1,6 +1,4 @@
 (function() {
-
-
 var formContainer = document.querySelector('.overlay-container');
 var formOpenButton = document.querySelector('.reviews-controls-new');
 var formCloseButton = document.querySelector('.review-form-close');
@@ -8,87 +6,67 @@ var formCloseButton = document.querySelector('.review-form-close');
 
 
 var reviewForm = document.querySelector('.review-form');
-
 var reviewName = document.getElementById('review-name');
 var reviewText = document.getElementById('review-text');
 
 var reviewScoreValue = reviewForm.querySelector('input[name="review-mark"]:checked').value;
 
-
 reviewName.required = true;
 reviewText.required = true;
 
-
-
 function checkValues() {
+  var reviewNameLabel = reviewForm.getElementsByClassName('review-fields-name')[0];
+  if (reviewName.value.length) {
+    reviewNameLabel.classList.add("invisible");
+    } else {
+      reviewNameLabel.classList.remove("invisible");
+    };
 
-if (reviewName.length > 1) {
-  var reviewNameLabel = document.getElementsByClassName('review-fields-name')[0];
-//  reviewNameLabel.classList.add('invisible');
-  reviewNameLabel.className = "invisible";
-     } else {
-       reviewNameLabel.className = " "
-      // reviewNameLabel.classList.remove('invisible');
- }
-
-  //reviewFieldsName.style.visibility = "hidden";
-//  reviewFieldsName.className = "invisible"
-//} else {
-//      reviewFieldsName.classList.remove('invisible');
-//    }
-;
-
-if (reviewText.length > 1) {
-var reviewFieldsText = document.getElementsByClassName('review-fields-text')[0];
-//reviewFieldsText.classList.add('invisible');
-//reviewFieldsText.style.display = "none";
-reviewFieldsText.className = "invisible";
-} else {
-    // reviewFieldsText.classList.remove('invisible');
-     reviewNameLabel.className = " " ;
-   };
+  var reviewFieldsText = reviewForm.getElementsByClassName('review-fields-text')[0];
+  if (reviewText.value.length) {
+    reviewFieldsText.classList.add("invisible");
+    } else {
+      reviewFieldsText.classList.remove("invisible");
+    };
 };
 
-reviewName.onchange = function() {
+reviewName.onkeyup = function() {
   checkValues();
-};
+  };
 
-reviewText.onchange = function() {
+reviewText.onkeyup = function() {
   checkValues();
-};
-
-
+  };
 
 
 function setCookieFun (name, value, expires) {
-document.cookie = name + "=" + escape(value) + ((expires) ? "; expires=" + expires : "");
-};
+  document.cookie = name + "=" + escape(value) + ((expires) ? "; expires=" + expires : "");
+  };
 
-reviewScoreValue.value = docCookies.getItem('radioValCook');
+
 reviewName.value = docCookies.getItem('reviewNameCook');
 
-
+var savedScoreValue = docCookies.getItem('radioValCook');
+if (savedScoreValue) {
+var selectedRadio = reviewForm.querySelector('input[name="review-mark"][value="' + savedScoreValue +'"]');
+selectedRadio.setAttribute('checked', true);
+};
 
 
 reviewForm.onsubmit = function(e) {
-e.preventDefault();
-var now = new Date();
-var exDate = new Date(now.getTime() + (30 * 365 * 60 * 60 * 24 * 1000));
+  e.preventDefault();
+  var now = new Date();
+  var exDate = new Date(now.getTime() + (30 * 365 * 60 * 60 * 24 * 1000));
 
-var reviewScoreValue = reviewForm.querySelector('input[name="review-mark"]:checked').value;
-var currentName = reviewName.value;
+  var reviewScoreValue = reviewForm.querySelector('input[name="review-mark"]:checked').value;
+  var currentName = reviewName.value;
 
-    setCookieFun('radioValCook', reviewScoreValue.value, 'exDate.toUTCString()');
-    setCookieFun('reviewNameCook', currentName, 'exDate.toUTCString()');
+    setCookieFun('radioValCook', reviewScoreValue, exDate.toUTCString());
+    setCookieFun('reviewNameCook', currentName, exDate.toUTCString());
 
 
     reviewForm.submit();
     }
-
-
-
-
-
 
 
   //появление формы
