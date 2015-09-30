@@ -6,8 +6,15 @@
 //>>Прячет блок с фильтрами .reviews-filter, добавляя ему класс invisible.
     var reviewForm = document.querySelector('.reviews-filter');
     reviewForm.classList.add("invisible");
-//reviewForm.style.display = "none";
 
+//предустановка редистейтов для xml
+    var ReadyState = {
+        'UNSEND' : 0,
+        'OPEN' : 1,
+        'HEADERS_RECEIVED' : 2,
+        'LOADING' : 3,
+        'DONE' : 4
+    };
 
 //мап для раздвижки звезд по css
     var ratingClass = {
@@ -18,6 +25,9 @@
             '5': 'review-rating-five',
         };
 
+ //константа таймаута
+    var requestFailureTimeout = 10000;
+
 //контейнер и шаблон для вставки данных
     var reviewContainer = document.querySelector('.reviews-list');
     var reviewTemplate = document.getElementById('review-template');
@@ -26,6 +36,8 @@
 
 //фрагмент для ускорения загрузки
     var reviewsFragment = document.createDocumentFragment();
+
+    var reviews;
 
 //массив для иттерации
     reviews.forEach(function(review, i) {
@@ -64,6 +76,61 @@
 
 //загрузка фрагметна
     reviewContainer.appendChild(reviewsFragment);
+
+  //>>>Обработчик ошибки: добавьте блоку отзыва .review класс review-load-failure.
+    reviewContainer.onerror = function(evt) {
+        reviewContainer.classList.add('review-load-failure');
+    };
+
+//в случаее таймаута
+    function showLoadFailure() {
+        reviewContainer.classList.add('review-load-failure');
+    };
+
+  //функция загрузки по xhr
+    function LoadXHL(callbackhell) {
+        var xhr = new XMLHttpRequest();
+        //xhr.ontimeout = (function () {}, 10);
+        xhr.timeout = RequestFailureTimeout;
+        xhr.open('get', 'data/reviews.json');
+        xhr.send();
+
+        //обработчик изменений состояний
+        xhr.onreadystatechange = function(evt) {
+            var loadedXhr = evt.target;
+
+            switch (loadedXhr.readyState) {
+            case ReadyState.OPENED:
+            case ReadyState.HEADERS_RECEIVED:
+            case ReadyState.LOADING:
+                reviewContainer.classList.add('reviews-list-loading');
+            break;
+
+            case ReadyState.DONE:
+            default:
+                if (loadedXhr.status == 200 || loadedXhr.status == 304) {
+                    var data = loadedXhr.response;
+                    reviewContainer.classList.remove('reviews-list-loading');
+                  //хелпер переводящий в формат джейсона
+                    callback(JSON.parse(data));
+                }
+
+                if (loadedXhr.status > 400) {
+                    showLoadFailure();
+                }
+                break;
+            }
+        };
+    // обработчик таймаута и ошибки
+        xhr.ontimeout = function() {
+            showLoadFailure();
+        }
+    xhr.onerror = function() {
+      showLoadFailure();
+    };
+
+    //закртие функции загрузки по xhr
+  };
 
 
     reviewForm.classList.remove('invisible');
