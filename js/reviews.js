@@ -1,26 +1,15 @@
-/*Задача
-Напишите модуль инициализации списка отзывов, который:
-Прячет блок с фильтрами .reviews-filter, добавляя ему класс invisible.
-Cоздаёт для каждой записи массива reviews блок отзыва на основе шаблона #review-template. Шаблон находится в index.html.
-Выводит созданные элементы на страницу внуть блока .reviews-list, используя DocumentFragment.
-Все изображения создаёт с помощью new Image() и добавляет им обработчики загрузки и ошибки
-Обработчик загрузки: после загрузки изображения замените им изображение, находящееся в шаблоне с помощью Element.replaceChild и укажите размеры 124×124.
-(непонял что нужно)
-Обработчик ошибки: добавьте блоку отзыва .review класс review-load-failure.
-Отображает блок с фильтрами.
+'use strict';
 
-проверка
-http://212.myftp.org:8080/
-
-*/
+//вызов ананимной функции
+ (function() {
 
 //>>Прячет блок с фильтрами .reviews-filter, добавляя ему класс invisible.
 var reviewForm = document.querySelector('.reviews-filter');
 reviewForm.classList.add("invisible");
 //reviewForm.style.display = "none";
 
-var reviewList = document.querySelector('.reviews-list');
 
+//мап для раздвижки звезд по css
 var ratingClass = {
 '1': 'review-rating-one',
 '2': 'review-rating-two',
@@ -33,6 +22,8 @@ var ratingClass = {
 var reviewContainer = document.querySelector('.reviews-list')
 var reviewTemplate = document.getElementById('review-template')
 
+var reviewList = document.querySelector('.reviews-list');
+
 //фрагмент для ускорения загрузки
 var reviewsFragment = document.createDocumentFragment();
 
@@ -42,9 +33,9 @@ reviews.forEach(function(review, i){
   //кланирование шаблона на каждой иттерации
   var newReviewData = reviewTemplate.content.children[0].cloneNode(true);
 
-newReviewData.querySelector('.review-rating').classList.add(ratingClass[review['rating']]);
-newReviewData.querySelector('.review-text').textContent = review['description'];
-newReviewData.querySelector('.review-author').title = review['author']['name'];
+    newReviewData.querySelector('.review-rating').classList.add(ratingClass[review['rating']]);
+    newReviewData.querySelector('.review-text').textContent = review['description'];
+    newReviewData.querySelector('.review-author').title = review['author']['name'];
 
 var authorImages = newReviewData.querySelector('.review-author');
 var tempImages = new Image();
@@ -77,3 +68,5 @@ reviewContainer.appendChild(reviewsFragment);
 
 
 reviewForm.classList.remove('invisible');
+
+})();
