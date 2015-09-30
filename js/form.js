@@ -2,34 +2,32 @@
 
 //вызов ананимной функции
 (function() {
-var formContainer = document.querySelector('.overlay-container');
-var formOpenButton = document.querySelector('.reviews-controls-new');
-var formCloseButton = document.querySelector('.review-form-close');
+  var formContainer = document.querySelector('.overlay-container');
+  var formOpenButton = document.querySelector('.reviews-controls-new');
+  var formCloseButton = document.querySelector('.review-form-close');
 
-var reviewForm = document.querySelector('.review-form');
-var reviewName = document.getElementById('review-name');
-var reviewText = document.getElementById('review-text');
+  var reviewForm = document.querySelector('.review-form');
+  var reviewName = document.getElementById('review-name');
+  var reviewText = document.getElementById('review-text');
 
-var reviewScoreValue = reviewForm.querySelector('input[name="review-mark"]:checked').value;
+  reviewName.required = true;
+  reviewText.required = true;
 
-reviewName.required = true;
-reviewText.required = true;
-
-function checkValues() {
-  var reviewNameLabel = reviewForm.getElementsByClassName('review-fields-name')[0];
-  if (reviewName.value.length) {
-    reviewNameLabel.classList.add("invisible");
-    } else {
+  function checkValues() {
+    var reviewNameLabel = reviewForm.getElementsByClassName('review-fields-name')[0];
+    if (reviewName.value.length) {
+      reviewNameLabel.classList.add("invisible");
+      } else {
       reviewNameLabel.classList.remove("invisible");
-    };
+      };
 
-  var reviewFieldsText = reviewForm.getElementsByClassName('review-fields-text')[0];
-  if (reviewText.value.length) {
-    reviewFieldsText.classList.add("invisible");
-    } else {
-      reviewFieldsText.classList.remove("invisible");
-    };
-};
+      var reviewFieldsText = reviewForm.getElementsByClassName('review-fields-text')[0];
+      if (reviewText.value.length) {
+        reviewFieldsText.classList.add("invisible");
+        } else {
+          reviewFieldsText.classList.remove("invisible");
+        };
+      };
 
 reviewName.onkeyup = function() {
   checkValues();
