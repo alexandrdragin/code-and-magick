@@ -26,6 +26,7 @@ body {
 
 h1,
 h2 {
+  font-family: 'Pixel Cyr';
   font-family: 'pixel_cyrnormal';
   text-align: center;
   text-shadow: 5px 5px 0 rgba(0, 0, 0, 0.72);
@@ -67,11 +68,12 @@ header {
 .header-soon {
   color: #fff;
   color: rgba(255, 255, 255, 0.6);
+  font-family: 'Pixel Cyr';
+  font-size: 26px;
   font-family: 'pixel_cyrnormal';
   font-size: 26px;
   position: relative;
-  z-index: 1;
-}
+  z-index: 1;}
 
 .header-title {
   font-size: 69px;
