@@ -123,17 +123,10 @@
       showLoadFailure();
     };
 
-<<<<<<< HEAD
-//загрузка фрагметна
-    reviewContainer.appendChild(reviewsFragment);
-
-    reviewForm.classList.remove('invisible');
-=======
   //  закртие функции загрузки по xhr
   }
 
   loadingReviews();
   reviewForm.classList.remove('invisible');
->>>>>>> origin/Mission-3
 
 })();
