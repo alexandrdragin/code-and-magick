@@ -7,15 +7,6 @@
   var reviewForm = document.querySelector('.reviews-filter');
   reviewForm.classList.add('invisible');
 
-//  предустановка редистейтов для xml
-  var ReadyState = {
-    'UNSEND': 0,
-    'OPEN': 1,
-    'HEADERS_RECEIVED': 2,
-    'LOADING': 3,
-    'DONE': 4
-  };
-
 //  мап для раздвижки звезд по css
   var ratingClass = {
     '1': 'review-rating-one',
@@ -25,6 +16,7 @@
     '5': 'review-rating-five'
   };
 
+
 //  контейнер для вставки данных
   var reviewContainer = document.querySelector('.reviews-list');
   //  шаблон для загрузки
@@ -32,7 +24,7 @@
   //  фрагмент для ускорения загрузки
   var reviewsFragment = document.createDocumentFragment();
 
-//  var reviews;
+  var reviews;
 
 
   reviewForm.classList.remove('invisible');
@@ -64,23 +56,12 @@
     reviewsFragment.appendChild(newReviewData);
   });
 
-}
-
 //  загрузка фрагметна
   reviewContainer.appendChild(reviewsFragment);
 
   //  >>>Обработчик ошибки: добавьте блоку отзыва .review класс review-load-failure.
-  reviewContainer.onerror = function(event) {
+  reviewContainer.onerror = function() {
     reviewContainer.classList.add('review-load-failure');
   };
-
-//  в случаее таймаута
-  function showLoadFailure() {
-    reviewContainer.classList.add('review-load-failure');
-  }
-
-
-  loadingReviews();
-  reviewForm.classList.remove('invisible');
 
 })();
