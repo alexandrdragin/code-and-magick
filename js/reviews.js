@@ -1,70 +1,139 @@
+
 'use strict';
 
-//вызов ананимной функции
-(function () {
+//  вызов ананимной функции
+(function() {
 
-//>>Прячет блок с фильтрами .reviews-filter, добавляя ему класс invisible.
-    var reviewForm = document.querySelector('.reviews-filter');
-    reviewForm.classList.add("invisible");
-//reviewForm.style.display = "none";
+//  Прячет блок с фильтрами .reviews-filter, добавляя ему класс invisible.
+  var reviewForm = document.querySelector('.reviews-filter');
+  reviewForm.classList.add('invisible');
 
+//  предустановка редистейтов для xml
+  var ReadyState = {
+    'UNSEND': 0,
+    'OPEN': 1,
+    'HEADERS_RECEIVED': 2,
+    'LOADING': 3,
+    'DONE': 4
+  };
 
-//мап для раздвижки звезд по css
-    var ratingClass = {
-            '1': 'review-rating-one',
-            '2': 'review-rating-two',
-            '3': 'review-rating-three',
-            '4': 'review-rating-four',
-            '5': 'review-rating-five',
-        };
+//  мап для раздвижки звезд по css
+  var ratingClass = {
+    '1': 'review-rating-one',
+    '2': 'review-rating-two',
+    '3': 'review-rating-three',
+    '4': 'review-rating-four',
+    '5': 'review-rating-five'
+  };
 
-//контейнер и шаблон для вставки данных
-    var reviewContainer = document.querySelector('.reviews-list');
-    var reviewTemplate = document.getElementById('review-template');
+//  константа таймаута
+  var requestFailureTimeout = 10000;
 
-    var reviewList = document.querySelector('.reviews-list');
+//  контейнер для вставки данных
+  var reviewContainer = document.querySelector('.reviews-list');
+  //  шаблон для загрузки
+  var reviewTemplate = document.getElementById('review-template');
+  //  фрагмент для ускорения загрузки
+  var reviewsFragment = document.createDocumentFragment();
 
-//фрагмент для ускорения загрузки
-    var reviewsFragment = document.createDocumentFragment();
+  var reviews;
 
-//массив для иттерации
-    reviews.forEach(function(review, i) {
+//  фукция вывода(отрисовки) списка отелей
+  function loadingReviews(reviews) {
+    reviewForm.classList.remove('invisible');
 
-  //клонирование шаблона на каждой иттерации
-        var newReviewData = reviewTemplate.content.children[0].cloneNode(true);
-        newReviewData.querySelector('.review-rating').classList.add(ratingClass[review['rating']]);
-        newReviewData.querySelector('.review-text').textContent = review['description'];
-        newReviewData.querySelector('.review-author').title = review['author']['name'];
+//    массив для иттерации
+    reviews.forEach(function(review) {
 
-        var authorImages = newReviewData.querySelector('.review-author');
-        var tempImages = new Image();
-        tempImages.onload = function () {
-          authorImages.src = review['author']['picture'];
-          authorImages.width = 124;
-          authorImages.height = 124;
-        };
+      //  клонирование шаблона на каждой иттерации
+      var newReviewData = reviewTemplate.content.children[0].cloneNode(true);
+      newReviewData.querySelector('.review-rating').classList.add(ratingClass[review['rating']]);
+      newReviewData.querySelector('.review-text').textContent = review['description'];
+      newReviewData.querySelector('.review-author').title = review['author']['name'];
 
-        tempImages.onerror = function () {
-            authorImages.remove();
-        };
+      var authorImages = newReviewData.querySelector('.review-author');
+      var tempImages = new Image();
+      tempImages.onload = function() {
+        authorImages.src = review['author']['picture'];
+        authorImages.width = 124;
+        authorImages.height = 124;
+      };
 
-        tempImages.src = review['author']['picture'];
+      tempImages.onerror = function() {
+        authorImages.remove();
+      };
 
+      tempImages.src = review['author']['picture'];
 
-//загрузка во фрагмент
-        reviewsFragment.appendChild(newReviewData);
+    //    загрузка во фрагмент
+      reviewsFragment.appendChild(newReviewData);
     });
 
-//reviewList.appendChild(newReviewData);
+//  загрузка фрагметна
+  reviewContainer.appendChild(reviewsFragment);
 
-//>>>Обработчик ошибки: добавьте блоку отзыва .review класс review-load-failure.
-    reviewContainer.onerror = function (evt) {
-        reviewContainer.classList.add('review-load-failure');
+  //  >>>Обработчик ошибки: добавьте блоку отзыва .review класс review-load-failure.
+  reviewContainer.onerror = function(event) {
+    reviewContainer.classList.add('review-load-failure');
+  };
+
+//  в случаее таймаута
+  function showLoadFailure() {
+    reviewContainer.classList.add('review-load-failure');
+  }
+
+//  функция загрузки по xhr
+  function LoadXHL(callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.timeout = requestFailureTimeout;
+    xhr.open('get', 'data/reviews.json');
+    xhr.send();
+
+    //  обработчик изменений состояний
+    xhr.onreadystatechange = function(evt) {
+      var loadedXhr = evt.target;
+
+      switch (loadedXhr.readyState) {
+        case ReadyState.OPENED:
+        case ReadyState.HEADERS_RECEIVED:
+        case ReadyState.LOADING:
+          reviewContainer.classList.add('reviews-list-loading');
+          break;
+
+        case ReadyState.DONE:
+        default:
+          if (loadedXhr.status === 200 || loadedXhr.status === 304) {
+            var data = loadedXhr.response;
+            reviewContainer.classList.remove('reviews-list-loading');
+        //  хелпер переводящий в формат джейсона
+            callback(JSON.parse(data));
+          }
+
+          if (loadedXhr.status > 400) {
+            showLoadFailure();
+          }
+          break;
+      }
+    };
+    // обработчик таймаута и ошибки
+    xhr.ontimeout = function() {
+      showLoadFailure();
+    };
+    xhr.onerror = function() {
+      showLoadFailure();
     };
 
+<<<<<<< HEAD
 //загрузка фрагметна
     reviewContainer.appendChild(reviewsFragment);
 
     reviewForm.classList.remove('invisible');
+=======
+  //  закртие функции загрузки по xhr
+  }
 
-}) ();
+  loadingReviews();
+  reviewForm.classList.remove('invisible');
+>>>>>>> origin/Mission-3
+
+})();
