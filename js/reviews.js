@@ -65,7 +65,6 @@
 //загрузка фрагметна
     reviewContainer.appendChild(reviewsFragment);
 
-
     reviewForm.classList.remove('invisible');
 
 }) ();
