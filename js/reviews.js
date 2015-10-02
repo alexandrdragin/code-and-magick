@@ -1,4 +1,3 @@
-
 'use strict';
 
 //  вызов ананимной функции
@@ -26,8 +25,9 @@
     '5': 'review-rating-five'
   };
 
-//  константа таймаута
+  //  константа таймаута
   var requestFailureTimeout = 10000;
+
 
 //  контейнер для вставки данных
   var reviewContainer = document.querySelector('.reviews-list');
@@ -38,14 +38,15 @@
 
   var reviews;
 
-//  фукция вывода(отрисовки) списка отелей
+  reviewForm.classList.remove('invisible');
+
   function loadingReviews(reviews) {
     reviewForm.classList.remove('invisible');
 
 //    массив для иттерации
-    reviews.forEach(function(review) {
+    reviews.forEach(function(review, i) {
 
-      //  клонирование шаблона на каждой иттерации
+    //  клонирование шаблона на каждой иттерации
       var newReviewData = reviewTemplate.content.children[0].cloneNode(true);
       newReviewData.querySelector('.review-rating').classList.add(ratingClass[review['rating']]);
       newReviewData.querySelector('.review-text').textContent = review['description'];
@@ -65,17 +66,13 @@
 
       tempImages.src = review['author']['picture'];
 
-    //    загрузка во фрагмент
+  //    загрузка во фрагмент
       reviewsFragment.appendChild(newReviewData);
     });
 
 //  загрузка фрагметна
-  reviewContainer.appendChild(reviewsFragment);
-
-  //  >>>Обработчик ошибки: добавьте блоку отзыва .review класс review-load-failure.
-  reviewContainer.onerror = function(event) {
-    reviewContainer.classList.add('review-load-failure');
-  };
+    reviewContainer.appendChild(reviewsFragment);
+  }
 
 //  в случаее таймаута
   function showLoadFailure() {
@@ -83,7 +80,7 @@
   }
 
 //  функция загрузки по xhr
-  function LoadXHL(callback) {
+  function loadXHR(callback) {
     var xhr = new XMLHttpRequest();
     xhr.timeout = requestFailureTimeout;
     xhr.open('get', 'data/reviews.json');
@@ -105,6 +102,7 @@
           if (loadedXhr.status === 200 || loadedXhr.status === 304) {
             var data = loadedXhr.response;
             reviewContainer.classList.remove('reviews-list-loading');
+            // console.log(data);
         //  хелпер переводящий в формат джейсона
             callback(JSON.parse(data));
           }
@@ -115,7 +113,7 @@
           break;
       }
     };
-    // обработчик таймаута и ошибки
+// обработчик таймаута и ошибки
     xhr.ontimeout = function() {
       showLoadFailure();
     };
@@ -123,10 +121,18 @@
       showLoadFailure();
     };
 
-  //  закртие функции загрузки по xhr
+//  закрытие функции загрузки по xhr
   }
 
-  loadingReviews();
-  reviewForm.classList.remove('invisible');
+  //  >>>Обработчик ошибки: добавьте блоку отзыва .review класс review-load-failure.
+  reviewContainer.onerror = function() {
+    reviewContainer.classList.add('review-load-failure');
+  };
+
+// когда загрузилось эта функция принимает data, сохраняет и отрисовывает их
+  loadXHR(function(loadedReviews) {
+    reviews = loadedReviews;
+  //  loadingReviews = (loadedReviews);
+  });
 
 })();
