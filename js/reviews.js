@@ -19,6 +19,15 @@
     'DONE': 4
   };
 
+//  предустановка редистейтов для xml
+  var ReadyState = {
+    'UNSEND': 0,
+    'OPEN': 1,
+    'HEADERS_RECEIVED': 2,
+    'LOADING': 3,
+    'DONE': 4
+  };
+
 //  мап для раздвижки звезд по css
   var ratingClass = {
     '1': 'review-rating-one',
@@ -44,11 +53,18 @@
 
   reviewForm.classList.remove('invisible');
 
+<<<<<<< HEAD
   function loadingReviews(reviews, pageNumber, replace) {
     // нормализация документа(горантирует содержание)
     pageNumber = pageNumber || 0;
 
     
+=======
+  function loadingReviews(reviews, pageNumber) {
+    // нормализация документа(горантирует содержание)
+    pageNumber = pageNumber || 0;
+
+>>>>>>> Mission-4
     reviewContainer.classList.remove('invisible');
     // чистим контейнер
     reviewContainer.innerHTML = '';
@@ -154,7 +170,11 @@
           var firstDate = (new Date(a.date)).valueOf();
           var secondDate = (new Date(b.date)).valueOf();
           if (firstDate > secondDate) {
+<<<<<<< HEAD
           return -1;
+=======
+            return -1;
+>>>>>>> Mission-4
           }
 
           if (firstDate < secondDate || (secondDate && firstDate === 'undefined')) {
@@ -232,17 +252,21 @@
     return filteredReviews;
   }
 
+<<<<<<< HEAD
   // reviewMore.onclick;
   reviewMore.addEventListener('click', function(evt) {
     //что происходит
   })
 
+=======
+>>>>>>> Mission-4
 // функция включения фильтров(находит по классу)
   function startFilters() {
     var filterElements = document.querySelectorAll('.reviews-filter-item');
     for (var i = 0, l = filterElements.length; i < l; i++) {
 
       // добовлям обработчик события которая запускает сетАктивФильтер
+<<<<<<< HEAD
       filterElements[i].addEventListener('click', function(evt) {
         var clickedFilter = evt.target;
         setActiveFilter(clickedFilter.getAttribute('for'));
@@ -260,6 +284,16 @@
   //     });
   // }
 
+=======
+      filterElements[i].onclick = function(evt) {
+        var clickedFilter = evt.currentTarget;
+        setActiveFilter(clickedFilter.getAttribute('for'));
+        clickedFilter.setAttribute('checked', true);
+      };
+    }
+  }
+
+>>>>>>> Mission-4
   //  функция включающая сортировку берет список ревью фильтурет по правилам
   function setActiveFilter(filterID) {
     var filteredReviews = filterReviews(originalReviews, filterID);
@@ -284,6 +318,7 @@
 })();
 
 /*
+<<<<<<< HEAD
 Задача
 
 Доработайте модуль js/reviews.js:
@@ -291,6 +326,16 @@
 +Каждая страница состоит максимум из 3 отзывов (последняя может содержать меньше).
 +Сделайте так, чтобы функция могла работать в двух режимах: добавления страницы и перезаписи содержимого контейнера.
 -Добавьте обработчик клика по кнопке "Показать еще", который будет показывать следующую страницу отзывов.
+=======
+---------------------
+Задача
+
+Доработайте модуль js/reviews.js:
+  Перепишите функцию вывода списка отзывов таким образом, чтобы она отрисовывала не все доступные изображения, а постранично:
+  Каждая страница состоит максимум из 3 отзывов (последняя может содержать меньше).
+  Сделайте так, чтобы функция могла работать в двух режимах: добавления страницы и перезаписи содержимого контейнера.
+  Добавьте обработчик клика по кнопке "Показать еще", который будет показывать следующую страницу отзывов.
+>>>>>>> Mission-4
   Перепишите функцию, которая устанавливает обработчики событий на клики по фильтрам с использованием делегирования.
   После фильтрации должна показываться первая страница.
   После переключения фильтра, выбранное значение должно сохраняться в localStorage и использоваться как значение по умолчанию при следующей загрузке.
