@@ -1,19 +1,6 @@
-/*
-<div class="overlay-gallery invisible">
-  <span class="overlay-gallery-close">&times;</span>
-  <div class="overlay-gallery-controls">
-    <div class="overlay-gallery-control overlay-gallery-control-left"></div>
-    <div class="overlay-gallery-preview">
-      <div class="overlay-gallery-preview-number"><span class="preview-number-current">1</span> из <span class="preview-number-total">5</span></div>
-    </div>
-    <div class="overlay-gallery-control overlay-gallery-control-right"></div>
-  </div>
-</div>
-*/
-
 'use strict';
 
-//  вызов ананимной функции
+//  вызов анонимной функции
 (function() {
 
   var Key = {
@@ -49,7 +36,7 @@
     hideGallery();
   }
 
-  function showGallery () {
+  function showGallery() {
     gallery.classList.remove('invisible');
     closeButtton.addEventListener('click', closeHandler);
     document.body.addEventListener('keydown', keyHandler);
@@ -58,23 +45,23 @@
   function keyHandler(evt) {
     switch (evt.keyCode) {
       case Key.LEFT:
-        console.log('Left')
+        console.log('Left');
         break;
       case Key.RIGHT:
-        console.log('Right')
+        console.log('Right');
         break;
       case Key.ESC:
-      default:
         hideGallery();
         break;
-      }
+      default: break;
+    }
   }
 
   photogalleryContainer.addEventListener('click', function(evt) {
     if (doesHaveParent(evt.target, 'photogallery' )) {
       showGallery();
     }
-  })
+  });
 
 
 })();

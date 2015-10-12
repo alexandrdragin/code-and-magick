@@ -1,11 +1,12 @@
 'use strict';
 
-//  вызов ананимной функции
+//  вызов анонимной функции
 (function() {
 
 //  Прячет блок с фильтрами .reviews-filter, добавляя ему класс invisible.
   var reviewForm = document.querySelector('.reviews-filter');
   reviewForm.classList.add('invisible');
+
 //  кнопка показать еще
   var reviewMore = document.querySelector('.reviews-controls-more');
   reviewMore.classList.remove('invisible');
@@ -32,7 +33,7 @@
   var requestFailureTimeout = 10000;
   var pageSize = 3;
 
-//  контейнер для вставки данных
+  //  контейнер для вставки данных
   var reviewContainer = document.querySelector('.reviews-list');
   //  шаблон для загрузки
   var reviewTemplate = document.getElementById('review-template');
@@ -40,18 +41,22 @@
   var reviewsFragment = document.createDocumentFragment();
 
   var originalReviews;
+  var filteredReviews;
   var currentPage = 0;
 
   reviewForm.classList.remove('invisible');
 
   function loadingReviews(reviews, pageNumber, replace) {
+    // проверям тип переменной + тернарный оператор(что делать если ? выполняться: нет;)
+    replace = typeof replace !== 'underfined' ? replace : true;
     // нормализация документа(горантирует содержание)
     pageNumber = pageNumber || 0;
 
-
-    reviewContainer.classList.remove('invisible');
-    // чистим контейнер
-    reviewContainer.innerHTML = '';
+    if (replace) {
+      reviewContainer.classList.remove('invisible');
+      // чистим контейнер
+      reviewContainer.innerHTML = '';
+    }
 
     // выбираем размер страницы
     var reviewsFrom = pageNumber * pageSize;
@@ -60,7 +65,7 @@
     // и перезаписываем ее с таким размером слайсом
     reviews = reviews.slice(reviewsFrom, reviewsTo);
 
-//    массив для иттерации
+  //    массив для иттерации
     reviews.forEach(function(review) {
 
     //  клонирование шаблона на каждой иттерации
@@ -88,6 +93,8 @@
     });
 
 //  загрузка фрагметна
+// чистим контейнер
+    reviewContainer.innerHTML = '';
     reviewContainer.appendChild(reviewsFragment);
   }
 
@@ -154,7 +161,7 @@
           var firstDate = (new Date(a.date)).valueOf();
           var secondDate = (new Date(b.date)).valueOf();
           if (firstDate > secondDate) {
-          return -1;
+            return -1;
           }
 
           if (firstDate < secondDate || (secondDate && firstDate === 'undefined')) {
@@ -229,13 +236,11 @@
         filteredReviews = reviews.slice(0);
         break;
     }
+
+    localStorage.setItem('filterID', filterID);
     return filteredReviews;
   }
 
-  // reviewMore.onclick;
-  reviewMore.addEventListener('click', function(evt) {
-    //что происходит
-  })
 
 // функция включения фильтров(находит по классу)
   function startFilters() {
@@ -250,35 +255,49 @@
     }
   }
 
-  //  ДЕЛЕГИРОВАНИЕ
-  // function startFilters() {
-  //   var filterElements = document.querySelector('.reviews-filter');
-  //     // добовлям обработчик события которая запускает сетАктивФильтер
-  //     filterElements.addEventListener('click', function(evt) {
-  //       var clickedFilter = evt.target;
-  //       setActiveFilter(clickedFilter.getAttribute('for'));
-  //     });
-  // }
+/*
+// делегирование
+  function startFilters() {
+    var filterElements = document.querySelector('.reviews-filter');
+      // добовлям обработчик события которая запускает сетАктивФильтер
+      filterElements.addEventListener('click', function(evt) {
+        var clickedFilter = evt.target;
+        setActiveFilter(clickedFilter.getAttribute('for'));
+      });
+  }
+*/
+
+
+// проверка есть ли след страница(те проверяет последняя отрисованная страница
+// должна быть меньше количество ревью поделенная на размер страницы + округление вврех)
+  function isNextPageAvailble() {
+    return currentPage < Math.ceil(originalReviews.length / pageSize);
+  }
+
+// подгрузка страниц по кнопке работает но не добавляет а перезаписывает
+  function moreReview() {
+    reviewMore.addEventListener('click', function() {
+      if (isNextPageAvailble()) {
+        loadingReviews(filteredReviews, currentPage++, false);
+      }
+    });
+  }
 
   //  функция включающая сортировку берет список ревью фильтурет по правилам
   function setActiveFilter(filterID) {
-    var filteredReviews = filterReviews(originalReviews, filterID);
+    filteredReviews = filterReviews(originalReviews, filterID);
+    currentPage = 0;
     //  возвращаем и отрисовываем
-    loadingReviews(filteredReviews, currentPage);
+    loadingReviews(filteredReviews, currentPage, true);
   }
 
   startFilters();
-
-  // loadingReviews(function(loadedReviews) {
-  //   originalReviews = loadedReviews;
-  //   setActiveFilter('reviews-all');
-  // });
+  moreReview();
 
 // когда загрузилось эта функция принимает data, сохраняет и отрисовывает их
-// loadingReviews();
   loadXHR(function(loadedReviews) {
     originalReviews = loadedReviews;
-    loadingReviews(loadedReviews);
+    setActiveFilter(localStorage.getItem('filterID') || 'reviews-all');
   });
 
 })();
@@ -287,36 +306,11 @@
 Задача
 
 Доработайте модуль js/reviews.js:
-+Перепишите функцию вывода списка отзывов таким образом, чтобы она отрисовывала не все доступные изображения, а постранично:
-+Каждая страница состоит максимум из 3 отзывов (последняя может содержать меньше).
-+Сделайте так, чтобы функция могла работать в двух режимах: добавления страницы и перезаписи содержимого контейнера.
--Добавьте обработчик клика по кнопке "Показать еще", который будет показывать следующую страницу отзывов.
-  Перепишите функцию, которая устанавливает обработчики событий на клики по фильтрам с использованием делегирования.
-  После фильтрации должна показываться первая страница.
-  После переключения фильтра, выбранное значение должно сохраняться в localStorage и использоваться как значение по умолчанию при следующей загрузке.
-
-
-------
-
-Первая задача
-
-Создайте модуль js/game_demo.js
-Добавьте обработчик события scroll у объекта window, который будет изменять свойство style.backgroundPosition у блока .header-clouds (эффект параллакса).
-Оптимизируйте обработчик скролла:
-  Если блок .header-clouds находится вне видимости, не производите вычисления background-position. Для определения видимости используйте Element.getBoundingClientRect.
-  Оптимизируйте обработчик события scroll с помощью таймаута, который срабатывает каждые 100 миллисекунд и испускает кастомное событие «исчезновения блока с облаками» из поля зрения.
-  ! Смещение для параллакса должно пересчитываться не каждые 100 миллисекунд, а на каждое изменение скролла, оптимизация касается только проверки видимости блока с облаками.
-  Добавьте обработчик события, отключающий параллакс, реагирующий на событие «исчезновения блока с облаками» из поля зрения.
-  Пример того, как могут вести себя облака при прокрутке. Вы можете использовать любую функцию для изменения позиции фона при скролле, главное, чтобы облака двигались.
-
-  Создайте модуль js/gallery.js и реализуйте в нем базовый функционал для фотогалереи.
-
-Добавьте с помощью делегирования обработчик кликов по фотографиям в галерее, к
-оторый убирает класс invisible у блока .overlay-gallery.
-Когда блок .overlay-gallery появляется, должен добавляться обработчик клавиатурных событий:
-Нажатие на Esc должно закрывать блок.
-Нажатия на стрелки влево и вправо должны вызывать функции переключения слайдов галереи.
-Сами функции пока что реализовывать не нужно, достаточно чтобы эти функции выводили в консоль направление переключения.
-Добавьте обработчик клика по крестику в блоке .overlay-gallery-close, который будет скрывать этот блок.
-Когда блок .gallery-overlay скрывается, обработчики событий должны удаляться.
++ Перепишите функцию вывода списка отзывов таким образом, чтобы она отрисовывала не все доступные изображения, а постранично:
++ Каждая страница состоит максимум из 3 отзывов (последняя может содержать меньше).
+? Сделайте так, чтобы функция могла работать в двух режимах: добавления страницы и перезаписи содержимого контейнера.
++- Добавьте обработчик клика по кнопке "Показать еще", который будет показывать следующую страницу отзывов.
++- Перепишите функцию, которая устанавливает обработчики событий на клики по фильтрам с использованием делегирования.
+?  После фильтрации должна показываться первая страница.
+- После переключения фильтра, выбранное значение должно сохраняться в localStorage и использоваться как значение по умолчанию при следующей загрузке.
 */
