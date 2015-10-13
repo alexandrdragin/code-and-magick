@@ -31,7 +31,6 @@
 
   //  константа таймаута
   var requestFailureTimeout = 10000;
-  var pageSize = 3;
 
   //  контейнер для вставки данных
   var reviewContainer = document.querySelector('.reviews-list');
@@ -41,6 +40,7 @@
   var reviewsFragment = document.createDocumentFragment();
 
   var originalReviews;
+<<<<<<< HEAD
   var filteredReviews;
   var currentPage = 0;
 
@@ -64,6 +64,14 @@
 
     // и перезаписываем ее с таким размером слайсом
     reviews = reviews.slice(reviewsFrom, reviewsTo);
+=======
+
+  reviewForm.classList.remove('invisible');
+
+  function loadingReviews(reviews) {
+
+    reviewContainer.classList.remove('invisible');
+>>>>>>> master
 
   //    массив для иттерации
     reviews.forEach(function(review) {
@@ -241,6 +249,15 @@
     return filteredReviews;
   }
 
+<<<<<<< HEAD
+=======
+  //  функция включающая сортировку берет список ревью фильтурет по правилам
+  function setActiveFilter(filterID) {
+    var filteredReviews = filterReviews(originalReviews, filterID);
+    //  возвращаем и отрисовываем
+    loadingReviews(filteredReviews);
+  }
+>>>>>>> master
 
 // функция включения фильтров(находит по классу)
   function startFilters() {
@@ -251,6 +268,7 @@
       filterElements[i].addEventListener('click', function(evt) {
         var clickedFilter = evt.target;
         setActiveFilter(clickedFilter.getAttribute('for'));
+<<<<<<< HEAD
       });
     }
   }
@@ -293,6 +311,18 @@
 
   startFilters();
   moreReview();
+=======
+        // и чекед переставляет местами
+          // document.querySelector('.reviews-filter-item.checked').setAttribute('checked', false);
+          // document.querySelector('input[name="reviews"]').setAttribute('checked', false);
+          // move('.reviews-filter-item.checked');
+        clickedFilter.setAttribute('checked', true);
+      };
+    }
+  }
+
+  startFilters();
+>>>>>>> master
 
 // когда загрузилось эта функция принимает data, сохраняет и отрисовывает их
   loadXHR(function(loadedReviews) {
@@ -301,6 +331,7 @@
   });
 
 })();
+<<<<<<< HEAD
 
 /*
 Задача
@@ -314,3 +345,5 @@
 ?  После фильтрации должна показываться первая страница.
 - После переключения фильтра, выбранное значение должно сохраняться в localStorage и использоваться как значение по умолчанию при следующей загрузке.
 */
+=======
+>>>>>>> master
