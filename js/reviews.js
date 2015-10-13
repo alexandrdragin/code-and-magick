@@ -42,13 +42,17 @@
 
   var originalReviews;
 <<<<<<< HEAD
+<<<<<<< HEAD
   var filteredReviews;
+=======
+>>>>>>> master
 =======
 >>>>>>> master
   var currentPage = 0;
 
   reviewForm.classList.remove('invisible');
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   function loadingReviews(reviews, pageNumber, replace) {
     // проверям тип переменной + тернарный оператор(что делать если ? выполняться: нет;)
@@ -67,6 +71,8 @@
     var reviewsTo = reviewsFrom + pageSize;
 
 =======
+=======
+>>>>>>> master
   function loadingReviews(reviews, pageNumber) {
     // нормализация документа(горантирует содержание)
     pageNumber = pageNumber || 0;
@@ -74,6 +80,16 @@
     reviewContainer.classList.remove('invisible');
     // чистим контейнер
     reviewContainer.innerHTML = '';
+<<<<<<< HEAD
+=======
+
+    // выбираем размер страницы
+    var reviewsFrom = pageNumber * pageSize;
+    var reviewsTo = reviewsFrom + pageSize;
+
+    // и перезаписываем ее с таким размером слайсом
+    reviews = reviews.slice(reviewsFrom, reviewsTo);
+>>>>>>> master
 
     // выбираем размер страницы
     var reviewsFrom = pageNumber * pageSize;
@@ -258,7 +274,10 @@
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 =======
 >>>>>>> master
 // функция включения фильтров(находит по классу)
@@ -274,6 +293,7 @@
     }
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 /*
 // делегирование
@@ -310,16 +330,26 @@
     //  возвращаем и отрисовываем
     loadingReviews(filteredReviews, currentPage, true);
 =======
+=======
+>>>>>>> master
   //  функция включающая сортировку берет список ревью фильтурет по правилам
   function setActiveFilter(filterID) {
     var filteredReviews = filterReviews(originalReviews, filterID);
     //  возвращаем и отрисовываем
     loadingReviews(filteredReviews, currentPage);
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
   }
 
   startFilters();
   moreReview();
+
+  // loadingReviews(function(loadedReviews) {
+  //   originalReviews = loadedReviews;
+  //   setActiveFilter('reviews-all');
+  // });
 
   // loadingReviews(function(loadedReviews) {
   //   originalReviews = loadedReviews;
@@ -337,6 +367,7 @@
 
 /*
 <<<<<<< HEAD
+<<<<<<< HEAD
 Задача
 
 Доработайте модуль js/reviews.js:
@@ -348,6 +379,8 @@
 ?  После фильтрации должна показываться первая страница.
 - После переключения фильтра, выбранное значение должно сохраняться в localStorage и использоваться как значение по умолчанию при следующей загрузке.
 =======
+=======
+>>>>>>> master
 <form class="reviews-filter" action="index.html" method="get">
   <input type="radio" name="reviews" id="reviews-all" value="reviews-all" checked><label for="reviews-all" class="reviews-filter-item"> Все</label>
   <input type="radio" name="reviews" id="reviews-recent" value="reviews-recent"><label for="reviews-recent" class="reviews-filter-item"> Недавние</label>
@@ -407,5 +440,8 @@
 Сами функции пока что реализовывать не нужно, достаточно чтобы эти функции выводили в консоль направление переключения.
 Добавьте обработчик клика по крестику в блоке .overlay-gallery-close, который будет скрывать этот блок.
 Когда блок .gallery-overlay скрывается, обработчики событий должны удаляться.
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
 */
