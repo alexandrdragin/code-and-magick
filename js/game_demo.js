@@ -4,15 +4,40 @@
 (function() {
 
   var headerClouds = document.querySelector('.header-clouds');
+<<<<<<< HEAD
 
   function isWeSeeClouds() {
     // проверяем элемент относительно вью порта  363  и 290
     // return headerClouds.getBoundingClientRect().top < 200;
     return window.pageYOffset < 500;
+=======
+  var isWeSeeClouds = true;
+  var checkTime = null;
+
+  function isWeSeeClouds400() {
+    return window.pageYOffset < 400;
+  }
+
+  function moveClouds() {
+    if (isWeSeeClouds) {
+      var num = window.pageYOffset;
+      headerClouds.style.top = num / 2 + 0 + 'px';
+      headerClouds.style.backgroundPosition = num / 8 + 0 + 'px';
+    }
+  }
+
+  function checkVisbility() {
+    if (isWeSeeClouds400()) {
+      isWeSeeClouds = true;
+    } else {
+      window.dispatchEvent(new CustomEvent('disappear'));
+    }
+>>>>>>> master
   }
 
   function initScroll() {
     window.addEventListener('scroll', function() {
+<<<<<<< HEAD
       if (isWeSeeClouds()) {
         var num = window.pageYOffset;
         headerClouds.style.top = num / 2  + 0 + "px";
@@ -53,3 +78,24 @@
   Добавьте обработчик события, отключающий параллакс, реагирующий на событие «исчезновения блока с облаками» из поля зрения.
 + Пример того, как могут вести себя облака при прокрутке. Вы можете использовать любую функцию для изменения позиции фона при скролле, главное, чтобы облака двигались.
 */
+=======
+      moveClouds();
+
+      if (checkTime) {
+        return false;
+      }
+      checkTime = setTimeout(function() {
+        checkVisbility();
+        checkTime = null;
+      }, 100);
+    });
+
+    window.addEventListener('disappear', function() {
+      isWeSeeClouds = false;
+    });
+  }
+
+  initScroll();
+
+})();
+>>>>>>> master

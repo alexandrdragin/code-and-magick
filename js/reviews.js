@@ -31,6 +31,7 @@
 
   //  константа таймаута
   var requestFailureTimeout = 10000;
+  var pageSize = 3;
 
   //  контейнер для вставки данных
   var reviewContainer = document.querySelector('.reviews-list');
@@ -41,6 +42,9 @@
 
   var originalReviews;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> master
   var filteredReviews;
   var currentPage = 0;
 
@@ -48,7 +52,7 @@
 
   function loadingReviews(reviews, pageNumber, replace) {
     // проверям тип переменной + тернарный оператор(что делать если ? выполняться: нет;)
-    replace = typeof replace !== 'underfined' ? replace : true;
+    replace = typeof replace !== 'undefined' ? replace : true;
     // нормализация документа(горантирует содержание)
     pageNumber = pageNumber || 0;
 
@@ -64,6 +68,7 @@
 
     // и перезаписываем ее с таким размером слайсом
     reviews = reviews.slice(reviewsFrom, reviewsTo);
+<<<<<<< HEAD
 =======
 
   reviewForm.classList.remove('invisible');
@@ -72,6 +77,8 @@
 
     reviewContainer.classList.remove('invisible');
 >>>>>>> js-htmlacademy/master
+=======
+>>>>>>> master
 
   //    массив для иттерации
     reviews.forEach(function(review) {
@@ -101,8 +108,6 @@
     });
 
 //  загрузка фрагметна
-// чистим контейнер
-    reviewContainer.innerHTML = '';
     reviewContainer.appendChild(reviewsFragment);
   }
 
@@ -162,7 +167,7 @@
   // правила сортировки
   function filterReviews(reviews, filterID) {
     // копирование изначального списка отелей
-    var filteredReviews = reviews.slice(0);
+    filteredReviews = reviews.slice(0);
     switch (filterID) {
       case 'reviews-recent':
         filteredReviews = filteredReviews.sort(function(a, b) {
@@ -250,6 +255,7 @@
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   //  функция включающая сортировку берет список ревью фильтурет по правилам
   function setActiveFilter(filterID) {
@@ -275,16 +281,19 @@
 
 /*
 // делегирование
+=======
+// функция включения фильтров(находит по классу) + делегирование
+>>>>>>> master
   function startFilters() {
     var filterElements = document.querySelector('.reviews-filter');
       // добовлям обработчик события которая запускает сетАктивФильтер
-      filterElements.addEventListener('click', function(evt) {
-        var clickedFilter = evt.target;
+    filterElements.addEventListener('click', function(evt) {
+      var clickedFilter = evt.target;
+      if (clickedFilter.hasAttribute('for')) {
         setActiveFilter(clickedFilter.getAttribute('for'));
-      });
+      }
+    });
   }
-*/
-
 
 // проверка есть ли след страница(те проверяет последняя отрисованная страница
 // должна быть меньше количество ревью поделенная на размер страницы + округление вврех)
@@ -311,6 +320,7 @@
 
   startFilters();
   moreReview();
+<<<<<<< HEAD
 =======
         // и чекед переставляет местами
           // document.querySelector('.reviews-filter-item.checked').setAttribute('checked', false);
@@ -323,14 +333,18 @@
 
   startFilters();
 >>>>>>> js-htmlacademy/master
+=======
+>>>>>>> master
 
 // когда загрузилось эта функция принимает data, сохраняет и отрисовывает их
   loadXHR(function(loadedReviews) {
     originalReviews = loadedReviews;
     setActiveFilter(localStorage.getItem('filterID') || 'reviews-all');
+    reviewForm.querySelector('input[name="reviews"][value="' + localStorage.getItem('filterID') || 'reviews-all' + '"]').checked = true;
   });
 
 })();
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 /*
@@ -347,3 +361,5 @@
 */
 =======
 >>>>>>> js-htmlacademy/master
+=======
+>>>>>>> master
