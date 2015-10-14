@@ -30,9 +30,6 @@
     this._data = data;
     this._element = null;
 
-    // Фиксирование контекста обработчика. При любом вызове this._onClick, объект отеля
-    // будет использоваться как контекст (даже при вызове через call и apply).
-    // this._onClick = this._onClick.bind(this);
   };
 
   /**
@@ -53,7 +50,7 @@
     // Добавление в контейнер.
     container.appendChild(newReviewData);
 
-///////////////////////////////////////////// БАГ ЛАЙН
+///////// БАГ ЛАЙН ///////////
 
     if (this._data['author']['picture']) {
       var authorImages = newReviewData.querySelector('.review-author');
@@ -84,7 +81,6 @@
     this._element.removeEventListener('click', this._onClick);
     this._element = null;
   };
-
 
   /**
    * Возвращает список фотографий текущего Review, получив его из объекта data_.
