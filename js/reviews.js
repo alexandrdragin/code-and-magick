@@ -31,6 +31,7 @@
 
   //  константа таймаута
   var requestFailureTimeout = 10000;
+  var pageSize = 3;
 
   //  контейнер для вставки данных
   var reviewContainer = document.querySelector('.reviews-list');
@@ -40,7 +41,6 @@
   var reviewsFragment = document.createDocumentFragment();
 
   var originalReviews;
-<<<<<<< HEAD
   var filteredReviews;
   var currentPage = 0;
 
@@ -64,14 +64,6 @@
 
     // и перезаписываем ее с таким размером слайсом
     reviews = reviews.slice(reviewsFrom, reviewsTo);
-=======
-
-  reviewForm.classList.remove('invisible');
-
-  function loadingReviews(reviews) {
-
-    reviewContainer.classList.remove('invisible');
->>>>>>> master
 
   //    массив для иттерации
     reviews.forEach(function(review) {
@@ -101,8 +93,6 @@
     });
 
 //  загрузка фрагметна
-// чистим контейнер
-    reviewContainer.innerHTML = '';
     reviewContainer.appendChild(reviewsFragment);
   }
 
@@ -249,18 +239,7 @@
     return filteredReviews;
   }
 
-<<<<<<< HEAD
 // функция включения фильтров(находит по классу) + делегирование
-=======
-  //  функция включающая сортировку берет список ревью фильтурет по правилам
-  function setActiveFilter(filterID) {
-    var filteredReviews = filterReviews(originalReviews, filterID);
-    //  возвращаем и отрисовываем
-    loadingReviews(filteredReviews);
-  }
-
-// функция включения фильтров(находит по классу)
->>>>>>> master
   function startFilters() {
     var filterElements = document.querySelector('.reviews-filter');
       // добовлям обработчик события которая запускает сетАктивФильтер
@@ -287,7 +266,6 @@
     });
   }
 
-<<<<<<< HEAD
   //  функция включающая сортировку берет список ревью фильтурет по правилам
   function setActiveFilter(filterID) {
     filteredReviews = filterReviews(originalReviews, filterID);
@@ -298,9 +276,6 @@
 
   startFilters();
   moreReview();
-=======
-  startFilters();
->>>>>>> master
 
 // когда загрузилось эта функция принимает data, сохраняет и отрисовывает их
   loadXHR(function(loadedReviews) {
