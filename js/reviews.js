@@ -48,7 +48,7 @@
 
   function loadingReviews(reviews, pageNumber, replace) {
     // проверям тип переменной + тернарный оператор(что делать если ? выполняться: нет;)
-    replace = typeof replace !== 'underfined' ? replace : true;
+    replace = typeof replace !== 'undefined' ? replace : true;
     // нормализация документа(горантирует содержание)
     pageNumber = pageNumber || 0;
 
@@ -93,8 +93,6 @@
     });
 
 //  загрузка фрагметна
-// чистим контейнер
-    reviewContainer.innerHTML = '';
     reviewContainer.appendChild(reviewsFragment);
   }
 
@@ -154,7 +152,7 @@
   // правила сортировки
   function filterReviews(reviews, filterID) {
     // копирование изначального списка отелей
-    var filteredReviews = reviews.slice(0);
+    filteredReviews = reviews.slice(0);
     switch (filterID) {
       case 'reviews-recent':
         filteredReviews = filteredReviews.sort(function(a, b) {
@@ -241,32 +239,17 @@
     return filteredReviews;
   }
 
-
-// функция включения фильтров(находит по классу)
-  function startFilters() {
-    var filterElements = document.querySelectorAll('.reviews-filter-item');
-    for (var i = 0, l = filterElements.length; i < l; i++) {
-
-      // добовлям обработчик события которая запускает сетАктивФильтер
-      filterElements[i].addEventListener('click', function(evt) {
-        var clickedFilter = evt.target;
-        setActiveFilter(clickedFilter.getAttribute('for'));
-      });
-    }
-  }
-
-/*
-// делегирование
+// функция включения фильтров(находит по классу) + делегирование
   function startFilters() {
     var filterElements = document.querySelector('.reviews-filter');
       // добовлям обработчик события которая запускает сетАктивФильтер
-      filterElements.addEventListener('click', function(evt) {
-        var clickedFilter = evt.target;
+    filterElements.addEventListener('click', function(evt) {
+      var clickedFilter = evt.target;
+      if (clickedFilter.hasAttribute('for')) {
         setActiveFilter(clickedFilter.getAttribute('for'));
-      });
+      }
+    });
   }
-*/
-
 
 // проверка есть ли след страница(те проверяет последняя отрисованная страница
 // должна быть меньше количество ревью поделенная на размер страницы + округление вврех)
@@ -298,19 +281,7 @@
   loadXHR(function(loadedReviews) {
     originalReviews = loadedReviews;
     setActiveFilter(localStorage.getItem('filterID') || 'reviews-all');
+    reviewForm.querySelector('input[name="reviews"][value="' + localStorage.getItem('filterID') || 'reviews-all' + '"]').checked = true;
   });
 
 })();
-
-/*
-Задача
-
-Доработайте модуль js/reviews.js:
-+ Перепишите функцию вывода списка отзывов таким образом, чтобы она отрисовывала не все доступные изображения, а постранично:
-+ Каждая страница состоит максимум из 3 отзывов (последняя может содержать меньше).
-? Сделайте так, чтобы функция могла работать в двух режимах: добавления страницы и перезаписи содержимого контейнера.
-+- Добавьте обработчик клика по кнопке "Показать еще", который будет показывать следующую страницу отзывов.
-+- Перепишите функцию, которая устанавливает обработчики событий на клики по фильтрам с использованием делегирования.
-?  После фильтрации должна показываться первая страница.
-- После переключения фильтра, выбранное значение должно сохраняться в localStorage и использоваться как значение по умолчанию при следующей загрузке.
-*/
