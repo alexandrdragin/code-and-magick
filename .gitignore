@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-
-...travis.yml
-=======
 gosha/
 node_modules/
 .idea
 .sublime*
->>>>>>> js-htmlacademy/master
