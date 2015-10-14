@@ -41,10 +41,6 @@
   var reviewsFragment = document.createDocumentFragment();
 
   var originalReviews;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> master
   var filteredReviews;
   var currentPage = 0;
 
@@ -68,17 +64,6 @@
 
     // и перезаписываем ее с таким размером слайсом
     reviews = reviews.slice(reviewsFrom, reviewsTo);
-<<<<<<< HEAD
-=======
-
-  reviewForm.classList.remove('invisible');
-
-  function loadingReviews(reviews) {
-
-    reviewContainer.classList.remove('invisible');
->>>>>>> js-htmlacademy/master
-=======
->>>>>>> master
 
   //    массив для иттерации
     reviews.forEach(function(review) {
@@ -254,36 +239,7 @@
     return filteredReviews;
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  //  функция включающая сортировку берет список ревью фильтурет по правилам
-  function setActiveFilter(filterID) {
-    var filteredReviews = filterReviews(originalReviews, filterID);
-    //  возвращаем и отрисовываем
-    loadingReviews(filteredReviews);
-  }
->>>>>>> js-htmlacademy/master
-
-// функция включения фильтров(находит по классу)
-  function startFilters() {
-    var filterElements = document.querySelectorAll('.reviews-filter-item');
-    for (var i = 0, l = filterElements.length; i < l; i++) {
-
-      // добовлям обработчик события которая запускает сетАктивФильтер
-      filterElements[i].addEventListener('click', function(evt) {
-        var clickedFilter = evt.target;
-        setActiveFilter(clickedFilter.getAttribute('for'));
-<<<<<<< HEAD
-      });
-    }
-  }
-
-/*
-// делегирование
-=======
 // функция включения фильтров(находит по классу) + делегирование
->>>>>>> master
   function startFilters() {
     var filterElements = document.querySelector('.reviews-filter');
       // добовлям обработчик события которая запускает сетАктивФильтер
@@ -320,21 +276,6 @@
 
   startFilters();
   moreReview();
-<<<<<<< HEAD
-=======
-        // и чекед переставляет местами
-          // document.querySelector('.reviews-filter-item.checked').setAttribute('checked', false);
-          // document.querySelector('input[name="reviews"]').setAttribute('checked', false);
-          // move('.reviews-filter-item.checked');
-        clickedFilter.setAttribute('checked', true);
-      };
-    }
-  }
-
-  startFilters();
->>>>>>> js-htmlacademy/master
-=======
->>>>>>> master
 
 // когда загрузилось эта функция принимает data, сохраняет и отрисовывает их
   loadXHR(function(loadedReviews) {
@@ -344,22 +285,3 @@
   });
 
 })();
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-/*
-Задача
-
-Доработайте модуль js/reviews.js:
-+ Перепишите функцию вывода списка отзывов таким образом, чтобы она отрисовывала не все доступные изображения, а постранично:
-+ Каждая страница состоит максимум из 3 отзывов (последняя может содержать меньше).
-? Сделайте так, чтобы функция могла работать в двух режимах: добавления страницы и перезаписи содержимого контейнера.
-+- Добавьте обработчик клика по кнопке "Показать еще", который будет показывать следующую страницу отзывов.
-+- Перепишите функцию, которая устанавливает обработчики событий на клики по фильтрам с использованием делегирования.
-?  После фильтрации должна показываться первая страница.
-- После переключения фильтра, выбранное значение должно сохраняться в localStorage и использоваться как значение по умолчанию при следующей загрузке.
-*/
-=======
->>>>>>> js-htmlacademy/master
-=======
->>>>>>> master
