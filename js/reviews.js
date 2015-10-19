@@ -1,3 +1,5 @@
+/* global Review: true Gallery: true */
+
 'use strict';
 
 //  вызов анонимной функции
@@ -22,7 +24,6 @@
 
   //  константа таймаута
   var requestFailureTimeout = 10000;
-
   var pageSize = 3;
 
   //  контейнер для вставки данных

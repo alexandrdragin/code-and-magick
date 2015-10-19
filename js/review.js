@@ -45,21 +45,19 @@
 
     newReviewData.querySelector('.review-rating').classList.add(ratingClass[this._data['rating']]);
     newReviewData.querySelector('.review-text').textContent = this._data['description'];
-    newReviewData.querySelector('.review-author').title = this._data['author']['name'];
 
     // Добавление в контейнер.
     container.appendChild(newReviewData);
-
-///////// БАГ ЛАЙН ///////////
 
     if (this._data['author']['picture']) {
       var authorImages = newReviewData.querySelector('.review-author');
       var tempImages = new Image();
       tempImages.onload = function() {
         authorImages.src = this._data['author']['picture'];
+        authorImages.title = this._data['author']['name'];
         authorImages.width = 124;
         authorImages.height = 124;
-      };
+      }.bind(this);
 
       tempImages.onerror = function() {
         authorImages.remove();
