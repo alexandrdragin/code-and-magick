@@ -11,6 +11,10 @@
 
 // создает конструктор галереи со свойствами
 
+  function clamp(value, min, max) {
+    return Math.max(Math.min(value, min), max);
+  }
+
   var Gallery = function() {
     // блок со всеми фото
     this.photogalleryContainer = document.querySelector('.photogallery');
@@ -26,22 +30,23 @@
     this._currentPhoto = 0;
     this._photos = [];
     // привязывалка
+
     this._onCloseClick = this._onCloseClick.bind(this);
     this._onLeftButtonClick = this._onLeftButtonClick.bind(this);
     this._onRightButtonClick = this._onRightButtonClick.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
-  }
+  };
 
-  /**
+  /**этератор массива на обьекте (коллекции) с контекстом(1 аргумент) через функцию из протопипа
    * Записывает список фотографий.
    * @param {Array.<string>} photos
    */
-  Gallery.prototype.setPhotos = function(photos) {
-    this.photogalleryContainer.forEach.call() = function() {
-      this._photos = photos;
-      var imageElement = new Image();
-      imageElement.src = this._photos[this._currentPhoto];
-    }
+  Gallery.prototype.setPhotos = function() {
+    //[].forEach.call()
+    var arr = Array.prototype.slice.call(this.photogalleryContainer.querySelectorAll('img'), 0);
+    this._photos = arr.map(function(img) {
+      return img.getAttribute('src');
+    });
   };
 
   /**
@@ -54,10 +59,10 @@
     this._closeButtton.addEventListener('click', this._onCloseClick);
     this._leftButton.addEventListener('click', this._onLeftButtonClick);
     this._rightButton.addEventListener('click', this._onRightButtonClick);
-    document.body.addEventListener('keydown', this._onKeyDown)
+    document.body.addEventListener('keydown', this._onKeyDown);
 
     this._showCurrentPhoto();
-  }
+  };
   /**
      * Наоборот, доб у контейнера класс invisible. Затем убирает
      * обработчики событий и обнуляет текущую фотографию.
@@ -69,7 +74,7 @@
 
     this._currentPhoto = 0;
     this._photos = [];
-  }
+  };
 
   Gallery.prototype._onClick = function(evt) {
     this.photogalleryContainer.addEventListener('click', this._onClick);
@@ -102,7 +107,7 @@
    */
   Gallery.prototype._onCloseClick = function(evt) {
     evt.preventDefault();
-    this.hide();
+    this.hideGallery();
   };
 
   /**
@@ -134,7 +139,7 @@
   Gallery.prototype._onKeyDown = function(evt) {
     switch (evt.keyCode) {
       case Key.ESC:
-        this.hide();
+        this.hideGallery();
         break;
 
       case Key.LEFT:
@@ -147,7 +152,6 @@
     }
   };
 
-
     /**
      * Устанавливает номер фотографии, которую нужно показать, предварительно
      * "зажав" его между 0 и количеством фотографий в галерее минус 1 (чтобы нельзя
@@ -155,76 +159,27 @@
      * фотографий), и показывает ее на странице.
      * @param {number} index
      */
-    Gallery.prototype.setCurrentPhoto = function(index) {
-      index = clamp(index, 0, this._photos.length - 1);
+  Gallery.prototype.setCurrentPhoto = function(index) {
+    index = clamp(index, 0, this._photos.length - 1);
 
-      if (this._currentPhoto === index) {
-        return;
-      }
+    if (this._currentPhoto === index) {
+      return;
+    }
 
-      this._currentPhoto = index;
-      this._showCurrentPhoto();
-    };
+    this._currentPhoto = index;
+    this._showCurrentPhoto();
+  };
+
+  var galleryInstance;
+
+  document.querySelector('.photogallery').addEventListener('click', function() {
+    if (!galleryInstance) {
+      galleryInstance = new Gallery();
+      galleryInstance.setPhotos();
+      galleryInstance.showGallery();
+    }
+  });
 
   window.Gallery = Gallery;
 
 })();
-
-
-
-/*
-  var photogalleryContainer = document.querySelector('.photogallery');
-  var gallery = document.querySelector('.overlay-gallery');
-  var closeButtton = gallery.querySelector('.overlay-gallery-close');
-
-
-  function doesHaveParent(element, className) {
-    do {
-      if (element.classList.contains(className)) {
-        return !element.classList.contains('gallery-nophoto');
-      }
-      element = element.parentElement;
-    } while (element);
-
-    return false;
-  }
-
-  function hideGallery() {
-    gallery.classList.add('invisible');
-    closeButtton.removeEventListener('click', closeHandler);
-    document.body.removeEventListener('keydown', keyHandler);
-  }
-
-  function closeHandler(event) {
-    event.preventDefault();
-    hideGallery();
-  }
-
-  function showGallery() {
-    gallery.classList.remove('invisible');
-    closeButtton.addEventListener('click', closeHandler);
-    document.body.addEventListener('keydown', keyHandler);
-  }
-
-  function keyHandler(evt) {
-    switch (evt.keyCode) {
-      case Key.LEFT:
-        console.log('Left');
-        break;
-      case Key.RIGHT:
-        console.log('Right');
-        break;
-      case Key.ESC:
-        hideGallery();
-        break;
-      default: break;
-    }
-  }
-
-  photogalleryContainer.addEventListener('click', function(evt) {
-    if (doesHaveParent(evt.target, 'photogallery' )) {
-      showGallery();
-    }
-  });
-
-*/

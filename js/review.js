@@ -30,6 +30,7 @@
     this._data = data;
     this._element = null;
 
+    this._onClick = this._onClick.bind(this);
   };
 
   /**
@@ -88,21 +89,13 @@
     return this._data.pictures;
   };
 
+  // обратотчик клику по фото
+  Review.prototype._onClick = function() {
+    var galleryEvent = new CustomEvent('showgallery', { detail: { reviewElement: this }} );
+    window.dispatchEvent(galleryEvent);
+  }
+
   // Экспорт конструктора объекта Review в глобальную область видимости.
   window.Review = Review;
 
 })();
-
-/*
-Создайте модуль js/review.js, в котором опишите объект типа Review и сделайте его доступным
-  в глобальной области видимости.
-Конструктор объекта Review должен принимать на вход аргумент data и сохранять его
-  в приватном свойстве _data.
-Объект Review должен обладать следующими свойствами и методами:
-Метод render который занимается отрисовкой элемента отзыва в списке
-  и добавлением ему обработчиков событий.
-Метод unrender который убирает элемент из списка и удаляет обработчики событий.
-Отредактируйте модуль js/reviews.js так, чтобы он отрисовывал отзывы,
-  создавая объекты типа Review, а при фильтрации, сделайте удаление отзывов,
-  вызовом метода unrender у каждого отзыва.
-*/
