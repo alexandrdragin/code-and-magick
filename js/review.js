@@ -89,13 +89,6 @@
     return this._data.pictures;
   };
 
-// обратотчик клику по фото(перенес это блок внутьрь gallery)
-//  Review.prototype._onClick = function() {
-//    var galleryEvent = new CustomEvent('showgallery', { detail: { reviewElement: this }} );
-//    console.log(this);
-//    window.dispatchEvent(galleryEvent);
-//  }
-
   // Экспорт конструктора объекта Review в глобальную область видимости.
   window.Review = Review;
 
