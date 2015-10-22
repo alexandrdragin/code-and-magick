@@ -1,11 +1,15 @@
 'use strict';
 
-//  вызов ананимной функции
+//  вызов анонимной функции
 (function() {
 
 //  Прячет блок с фильтрами .reviews-filter, добавляя ему класс invisible.
   var reviewForm = document.querySelector('.reviews-filter');
   reviewForm.classList.add('invisible');
+
+//  кнопка показать еще
+  var reviewMore = document.querySelector('.reviews-controls-more');
+  reviewMore.classList.remove('invisible');
 
 //  предустановка редистейтов для xml
   var ReadyState = {
@@ -27,8 +31,9 @@
 
   //  константа таймаута
   var requestFailureTimeout = 10000;
+  var pageSize = 3;
 
-//  контейнер для вставки данных
+  //  контейнер для вставки данных
   var reviewContainer = document.querySelector('.reviews-list');
   //  шаблон для загрузки
   var reviewTemplate = document.getElementById('review-template');
@@ -36,14 +41,31 @@
   var reviewsFragment = document.createDocumentFragment();
 
   var originalReviews;
+  var filteredReviews;
+  var currentPage = 0;
 
   reviewForm.classList.remove('invisible');
 
-  function loadingReviews(reviews) {
+  function loadingReviews(reviews, pageNumber, replace) {
+    // проверям тип переменной + тернарный оператор(что делать если ? выполняться: нет;)
+    replace = typeof replace !== 'undefined' ? replace : true;
+    // нормализация документа(горантирует содержание)
+    pageNumber = pageNumber || 0;
 
-    reviewContainer.classList.remove('invisible');
+    if (replace) {
+      reviewContainer.classList.remove('invisible');
+      // чистим контейнер
+      reviewContainer.innerHTML = '';
+    }
 
-//    массив для иттерации
+    // выбираем размер страницы
+    var reviewsFrom = pageNumber * pageSize;
+    var reviewsTo = reviewsFrom + pageSize;
+
+    // и перезаписываем ее с таким размером слайсом
+    reviews = reviews.slice(reviewsFrom, reviewsTo);
+
+  //    массив для иттерации
     reviews.forEach(function(review) {
 
     //  клонирование шаблона на каждой иттерации
@@ -71,8 +93,6 @@
     });
 
 //  загрузка фрагметна
-// чистим контейнер
-    reviewContainer.innerHTML = '';
     reviewContainer.appendChild(reviewsFragment);
   }
 
@@ -132,7 +152,7 @@
   // правила сортировки
   function filterReviews(reviews, filterID) {
     // копирование изначального списка отелей
-    var filteredReviews = reviews.slice(0);
+    filteredReviews = reviews.slice(0);
     switch (filterID) {
       case 'reviews-recent':
         filteredReviews = filteredReviews.sort(function(a, b) {
@@ -214,40 +234,54 @@
         filteredReviews = reviews.slice(0);
         break;
     }
+
+    localStorage.setItem('filterID', filterID);
     return filteredReviews;
+  }
+
+// функция включения фильтров(находит по классу) + делегирование
+  function startFilters() {
+    var filterElements = document.querySelector('.reviews-filter');
+      // добовлям обработчик события которая запускает сетАктивФильтер
+    filterElements.addEventListener('click', function(evt) {
+      var clickedFilter = evt.target;
+      if (clickedFilter.hasAttribute('for')) {
+        setActiveFilter(clickedFilter.getAttribute('for'));
+      }
+    });
+  }
+
+// проверка есть ли след страница(те проверяет последняя отрисованная страница
+// должна быть меньше количество ревью поделенная на размер страницы + округление вврех)
+  function isNextPageAvailble() {
+    return currentPage < Math.ceil(originalReviews.length / pageSize);
+  }
+
+// подгрузка страниц по кнопке работает но не добавляет а перезаписывает
+  function moreReview() {
+    reviewMore.addEventListener('click', function() {
+      if (isNextPageAvailble()) {
+        loadingReviews(filteredReviews, currentPage++, false);
+      }
+    });
   }
 
   //  функция включающая сортировку берет список ревью фильтурет по правилам
   function setActiveFilter(filterID) {
-    var filteredReviews = filterReviews(originalReviews, filterID);
+    filteredReviews = filterReviews(originalReviews, filterID);
+    currentPage = 0;
     //  возвращаем и отрисовываем
-    loadingReviews(filteredReviews);
-  }
-
-// функция включения фильтров(находит по классу)
-  function startFilters() {
-    var filterElements = document.querySelectorAll('.reviews-filter-item');
-    for (var i = 0, l = filterElements.length; i < l; i++) {
-
-      // добовлям обработчик события которая запускает сетАктивФильтер
-      filterElements[i].onclick = function(evt) {
-        var clickedFilter = evt.currentTarget;
-        setActiveFilter(clickedFilter.getAttribute('for'));
-        // и чекед переставляет местами
-          // document.querySelector('.reviews-filter-item.checked').setAttribute('checked', false);
-          // document.querySelector('input[name="reviews"]').setAttribute('checked', false);
-          // move('.reviews-filter-item.checked');
-        clickedFilter.setAttribute('checked', true);
-      };
-    }
+    loadingReviews(filteredReviews, currentPage, true);
   }
 
   startFilters();
+  moreReview();
 
 // когда загрузилось эта функция принимает data, сохраняет и отрисовывает их
   loadXHR(function(loadedReviews) {
     originalReviews = loadedReviews;
-    loadingReviews(loadedReviews);
+    setActiveFilter(localStorage.getItem('filterID') || 'reviews-all');
+    reviewForm.querySelector('input[name="reviews"][value="' + localStorage.getItem('filterID') || 'reviews-all' + '"]').checked = true;
   });
 
 })();
