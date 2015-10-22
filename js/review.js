@@ -30,7 +30,7 @@
     this._data = data;
     this._element = null;
 
-    this._onClick = this._onClick.bind(this);
+    //this._onClick = this._onClick.bind(this);
   };
 
   /**
@@ -89,11 +89,12 @@
     return this._data.pictures;
   };
 
-  // обратотчик клику по фото
-  Review.prototype._onClick = function() {
-    var galleryEvent = new CustomEvent('showgallery', { detail: { reviewElement: this }} );
-    window.dispatchEvent(galleryEvent);
-  }
+// обратотчик клику по фото(перенес это блок внутьрь gallery)
+//  Review.prototype._onClick = function() {
+//    var galleryEvent = new CustomEvent('showgallery', { detail: { reviewElement: this }} );
+//    console.log(this);
+//    window.dispatchEvent(galleryEvent);
+//  }
 
   // Экспорт конструктора объекта Review в глобальную область видимости.
   window.Review = Review;

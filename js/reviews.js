@@ -1,4 +1,4 @@
-/* global Review: true Gallery: true */
+/* global Review: true  */
 
 'use strict';
 
@@ -247,17 +247,8 @@
     loadingReviews(filteredReviews, currentPage, true);
   }
 
-//записывает фото в галлееррю
-  function initGallery() {
-    window.addEventListener('showgallery', function(evt) {
-      gallery.setPhotos(evt.detail.reviewElement._data['author']['picture']);
-      gallery.showGallery();
-    })
-  }
-
   startFilters();
   moreReview();
-  initGallery();
 
 // когда загрузилось эта функция принимает data, сохраняет и отрисовывает их
   loadXHR(function(loadedReviews) {

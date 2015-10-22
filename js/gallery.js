@@ -11,10 +11,6 @@
 
 // создает конструктор галереи со свойствами
 
-  function clamp(value, min, max) {
-    return Math.max(Math.min(value, min), max);
-  }
-
   var Gallery = function() {
     // блок со всеми фото
     this.photogalleryContainer = document.querySelector('.photogallery');
@@ -42,7 +38,6 @@
    * @param {Array.<string>} photos
    */
   Gallery.prototype.setPhotos = function() {
-    //[].forEach.call()
     var arr = Array.prototype.slice.call(this.photogalleryContainer.querySelectorAll('img'), 0);
     this._photos = arr.map(function(img) {
       return img.getAttribute('src');
@@ -53,13 +48,24 @@
      * Показывает фотогалерею, убирая у контейнера класс invisible. Затем добавляет
      * обработчики событий и показывает текущую фотографию.
      */
-  Gallery.prototype.showGallery = function() {
+  Gallery.prototype.showGallery = function(img) {
     this.element.classList.remove('invisible');
-
+    this._invisible = false;
     this._closeButtton.addEventListener('click', this._onCloseClick);
     this._leftButton.addEventListener('click', this._onLeftButtonClick);
     this._rightButton.addEventListener('click', this._onRightButtonClick);
     document.body.addEventListener('keydown', this._onKeyDown);
+
+    this.showPhoto(img);
+  };
+
+  Gallery.prototype.showPhoto = function(img) {
+    this.element.classList.remove('invisible');
+    this._invisible = false;
+    var index = this._photos.indexOf(img.getAttribute('src'));
+    if (index !== -1) {
+      this._currentPhoto = index;
+    }
 
     this._showCurrentPhoto();
   };
@@ -69,18 +75,9 @@
      */
   Gallery.prototype.hideGallery = function() {
     this.element.classList.add('invisible');
-    this._closeButtton.removeEventListener('click', this._onCloseClick);
-    document.body.removeEventListener('keydown', this._onKeyDown);
+    this._invisible = true;
 
     this._currentPhoto = 0;
-    this._photos = [];
-  };
-
-  Gallery.prototype._onClick = function(evt) {
-    this.photogalleryContainer.addEventListener('click', this._onClick);
-    if (doesHaveParent(evt.target, 'photogallery' )) {
-      this.showGallery();
-    }
   };
 
   /**
@@ -153,14 +150,17 @@
   };
 
     /**
-     * Устанавливает номер фотографии, которую нужно показать, предварительно
-     * "зажав" его между 0 и количеством фотографий в галерее минус 1 (чтобы нельзя
-     * было показать фотографию номер -1 или номер 100 в массиве из четырех
-     * фотографий), и показывает ее на странице.
+     * прокрутка по кругу
      * @param {number} index
      */
   Gallery.prototype.setCurrentPhoto = function(index) {
-    index = clamp(index, 0, this._photos.length - 1);
+    if (index < 0) {
+      index = 5;
+    }
+
+    if (index > 5) {
+      index = 0;
+    }
 
     if (this._currentPhoto === index) {
       return;
@@ -172,14 +172,16 @@
 
   var galleryInstance;
 
-  document.querySelector('.photogallery').addEventListener('click', function() {
+  document.querySelector('.photogallery').addEventListener('click', function(event) {
+    event.stopPropagation();
+    event.preventDefault();
     if (!galleryInstance) {
       galleryInstance = new Gallery();
       galleryInstance.setPhotos();
-      galleryInstance.showGallery();
+      galleryInstance.showGallery(event.target);
+    } else {
+      galleryInstance.showPhoto(event.target);
     }
   });
-
-  window.Gallery = Gallery;
 
 })();
