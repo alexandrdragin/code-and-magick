@@ -1,3 +1,5 @@
+/* global Review: true  */
+
 'use strict';
 
 //  вызов анонимной функции
@@ -20,15 +22,6 @@
     'DONE': 4
   };
 
-//  мап для раздвижки звезд по css
-  var ratingClass = {
-    '1': 'review-rating-one',
-    '2': 'review-rating-two',
-    '3': 'review-rating-three',
-    '4': 'review-rating-four',
-    '5': 'review-rating-five'
-  };
-
   //  константа таймаута
   var requestFailureTimeout = 10000;
   var pageSize = 3;
@@ -36,7 +29,7 @@
   //  контейнер для вставки данных
   var reviewContainer = document.querySelector('.reviews-list');
   //  шаблон для загрузки
-  var reviewTemplate = document.getElementById('review-template');
+
   //  фрагмент для ускорения загрузки
   var reviewsFragment = document.createDocumentFragment();
 
@@ -46,7 +39,7 @@
 
   reviewForm.classList.remove('invisible');
 
-  function loadingReviews(reviews, pageNumber, replace) {
+  function loadingReviews(reviewsToRender, pageNumber, replace) {
     // проверям тип переменной + тернарный оператор(что делать если ? выполняться: нет;)
     replace = typeof replace !== 'undefined' ? replace : true;
     // нормализация документа(горантирует содержание)
@@ -63,33 +56,13 @@
     var reviewsTo = reviewsFrom + pageSize;
 
     // и перезаписываем ее с таким размером слайсом
-    reviews = reviews.slice(reviewsFrom, reviewsTo);
+    reviewsToRender = reviewsToRender.slice(reviewsFrom, reviewsTo);
 
   //    массив для иттерации
-    reviews.forEach(function(review) {
-
-    //  клонирование шаблона на каждой иттерации
-      var newReviewData = reviewTemplate.content.children[0].cloneNode(true);
-      newReviewData.querySelector('.review-rating').classList.add(ratingClass[review['rating']]);
-      newReviewData.querySelector('.review-text').textContent = review['description'];
-      newReviewData.querySelector('.review-author').title = review['author']['name'];
-
-      var authorImages = newReviewData.querySelector('.review-author');
-      var tempImages = new Image();
-      tempImages.onload = function() {
-        authorImages.src = review['author']['picture'];
-        authorImages.width = 124;
-        authorImages.height = 124;
-      };
-
-      tempImages.onerror = function() {
-        authorImages.remove();
-      };
-
-      tempImages.src = review['author']['picture'];
-
-  //    загрузка во фрагмент
-      reviewsFragment.appendChild(newReviewData);
+    reviewsToRender.forEach(function(reviewData) {
+      var newReviewData = new Review(reviewData);
+      newReviewData.render(reviewsFragment);
+      //renderedReviews.push(newReviewData);
     });
 
 //  загрузка фрагметна

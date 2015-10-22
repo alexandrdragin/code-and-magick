@@ -8,7 +8,7 @@
   var checkTime = null;
 
   function isWeSeeClouds400() {
-    return window.pageYOffset < 400;
+    return window.pageYOffset < 300;
   }
 
   function moveClouds() {
