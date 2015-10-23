@@ -8,14 +8,14 @@
   var checkTime = null;
 
   function isWeSeeClouds400() {
-    return window.pageYOffset < 300;
+    return window.pageYOffset < 400;
   }
 
   function moveClouds() {
     if (isWeSeeClouds) {
       var num = window.pageYOffset;
-      headerClouds.style.top = num / 2 + 0 + 'px';
-      headerClouds.style.backgroundPosition = num / 8 + 0 + 'px';
+      headerClouds.style.top = num / 4 + 0 + 'px';
+      headerClouds.style.backgroundPosition = num / 2 + 0 + 'px';
     }
   }
 

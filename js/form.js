@@ -1,7 +1,13 @@
 'use strict';
 
-//  вызов ананимной функции
+/**
+*  вызов ананимной функции
+*/
 (function() {
+  /**
+  *  Поиск и загрузка всех элементов формы
+  * @type {Element}
+  */
   var formContainer = document.querySelector('.overlay-container');
   var formOpenButton = document.querySelector('.reviews-controls-new');
   var formCloseButton = document.querySelector('.review-form-close');
@@ -10,9 +16,15 @@
   var reviewName = document.getElementById('review-name');
   var reviewText = document.getElementById('review-text');
 
+  /**
+  *  Установка параметра required текстовым полям
+  */
   reviewName.required = true;
   reviewText.required = true;
 
+  /**
+  *  Функция проверки длинны набранного текста + скрытия лейблов
+  */
   function checkValues() {
     var reviewNameLabel = reviewForm.getElementsByClassName('review-fields-name')[0];
     if (reviewName.value.length) {
