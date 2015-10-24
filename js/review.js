@@ -3,9 +3,9 @@
 (function() {
 
   /**
+   * мап для раздвижки звезд по css
    * @type {Object.<string, string>}
    */
-   //  мап для раздвижки звезд по css
   var ratingClass = {
     '1': 'review-rating-one',
     '2': 'review-rating-two',
@@ -30,7 +30,6 @@
     this._data = data;
     this._element = null;
 
-    //this._onClick = this._onClick.bind(this);
   };
 
   /**

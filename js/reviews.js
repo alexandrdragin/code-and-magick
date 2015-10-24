@@ -46,25 +46,27 @@
    */
   var renderedReviews = [];
 
-
   /**
-  * Выводит список ревью
-  * @param {Array.<Object>} reviewsToRender
-  * @param {number} pageNumber
-  * @param {boolean=} replace
-  */
-
+   * Выводит список ревью
+   * @param {Array.<Object>} reviewsToRender
+   * @param {number} pageNumber
+   * @param {boolean=} replace
+   */
   function loadingReviews(reviewsToRender, pageNumber, replace) {
     // проверям тип переменной + тернарный оператор(что делать если ? выполняться: нет;)
     replace = typeof replace !== 'undefined' ? replace : true;
     // нормализация документа(горантирует содержание)
     pageNumber = pageNumber || 0;
 
+    // Удаление списка отелей. Пока в массиве renderedReviews есть объекты
+    // review, вызывается функция Array.prototype.shift(), которая удаляет
+    // первый элемент из массива и возвращает его, и у этого отеля вызывается
+    // метод Review.prototype.unrender.
     if (replace) {
       var el;
       while ((el = renderedReviews.shift())) {
       // чистим контейнер
-      el.unrender();
+        el.unrender();
       }
 
       reviewContainer.classList.remove('invisible');
@@ -77,7 +79,9 @@
     // и перезаписываем ее с таким размером слайсом
     reviewsToRender = reviewsToRender.slice(reviewsFrom, reviewsTo);
 
-  //    массив для иттерации
+    // Отрисовка списка отелей. На каждой итерации цикла создается объект
+    // типа Review с уникальными данными, отрисовывается в предназначенный
+    // для него контейнер (reviewsFragment) и добавляется в массив renderedReviews.
     reviewsToRender.forEach(function(reviewData) {
       var newReviewData = new Review(reviewData);
       newReviewData.render(reviewsFragment);
@@ -93,7 +97,12 @@
     reviewContainer.classList.add('review-load-failure');
   }
 
-//  функция загрузки по xhr
+
+  /**
+   * Загрузка списка отелей. После успешной загрузки вызывается функция загрузки по xhr
+   * callback, которая передается в качестве аргумента.
+   * @param {function} callback
+   */
   function loadXHR(callback) {
     var xhr = new XMLHttpRequest();
     xhr.timeout = requestFailureTimeout;
@@ -141,7 +150,16 @@
     reviewContainer.classList.add('review-load-failure');
   };
 
-  // правила сортировки
+  /**
+   * Фильтрация списка ревью. Принимает на вход список ревью
+   * и ID фильтра. В зависимости от переданного ID применяет
+   * разные алгоритмы фильтрации. Возвращает отфильтрованный
+   * список и записывает примененный фильтр в localStorage.
+   * Не изменяет исходный массив.
+   * @param {Array.<Object>} reviews
+   * @param {string} filterID
+   * @return {Array.<Object>}
+   */
   function filterReviews(reviews, filterID) {
     // копирование изначального списка отелей
     filteredReviews = reviews.slice(0);
@@ -231,7 +249,13 @@
     return filteredReviews;
   }
 
-// функция включения фильтров(находит по классу) + делегирование
+  /**
+   * Инициализация подписки на клики по кнопкам фильтра.
+   * Используется делегирование событий: события обрабатываются на объекте,
+   * содержащем все фильтры, и в момент наступления события, проверяется,
+   * произошел ли клик по фильтру или нет и если да, то вызывается функция
+   * установки фильтра.
+   */
   function startFilters() {
     var filterElements = document.querySelector('.reviews-filter');
       // добовлям обработчик события которая запускает сетАктивФильтер
@@ -242,9 +266,12 @@
       }
     });
   }
-
-// проверка есть ли след страница(те проверяет последняя отрисованная страница
-// должна быть меньше количество ревью поделенная на размер страницы + округление вврех)
+  /**
+   * Проверяет можно ли отрисовать следующую страницу списка отелей.
+   * (те проверяет последняя отрисованная страница
+   * должна быть меньше количество ревью поделенная на размер страницы + округление вврех)
+   * @return {boolean}
+   */
   function isNextPageAvailble() {
     return currentPage < Math.ceil(originalReviews.length / pageSize);
   }
