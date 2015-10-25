@@ -54,7 +54,7 @@
    */
 
   Gallery.prototype.setPhotos = function(photos) {
-    this._photos.reset(photos.map(function(photoSrc) {
+    this._photos.reset(photos(function(photoSrc) {
       return new Backbone.Model({
         url: photoSrc
       });
