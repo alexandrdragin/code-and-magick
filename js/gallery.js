@@ -1,3 +1,5 @@
+/* global GalleryPicture: true */
+
 'use strict';
 
 //  вызов анонимной функции
@@ -21,6 +23,9 @@
    * @constructor
    */
   var Gallery = function() {
+
+    this._photos = new Backbone.Collection();
+
     // блок со всеми фото
     this.photogalleryContainer = document.querySelector('.photogallery');
     //блок оверлея
@@ -42,21 +47,25 @@
     this._onKeyDown = this._onKeyDown.bind(this);
   };
 
-  /**этератор массива на обьекте (коллекции) с контекстом(1 аргумент) через функцию из протопипа
-   * Записывает список фотографий.
+  /**
+   * этератор массива на обьекте (коллекции) с контекстом(1 аргумент) через функцию из протопипа
+   * Записывает список фотографий. и их срц
    * @param {Array.<string>} photos
    */
-  Gallery.prototype.setPhotos = function() {
-    var arr = Array.prototype.slice.call(this.photogalleryContainer.querySelectorAll('img'), 0);
-    this._photos = arr.map(function(img) {
-      return img.getAttribute('src');
-    });
+
+  Gallery.prototype.setPhotos = function(photos) {
+    this._photos.reset(photos.map(function(photoSrc) {
+      return new Backbone.Model({
+        url: photoSrc
+      });
+    }));
   };
 
   /**
-     * Показывает фотогалерею, убирая у контейнера класс invisible. Затем добавляет
-     * обработчики событий и показывает текущую фотографию.
-     */
+   * Показывает фотогалерею, убирая у контейнера класс invisible. Затем добавляет
+   * обработчики событий и показывает текущую фотографию.
+   * @param {Image} img
+   */
   Gallery.prototype.showGallery = function(img) {
     this.element.classList.remove('invisible');
     this._invisible = false;
@@ -68,6 +77,10 @@
     this.showPhoto(img);
   };
 
+  /**
+   * ловит img и показывает его через номер по индексу.
+   * @param {Image} img
+   */
   Gallery.prototype.showPhoto = function(img) {
     this.element.classList.remove('invisible');
     this._invisible = false;
@@ -79,9 +92,8 @@
     this._showCurrentPhoto();
   };
   /**
-     * Наоборот, доб у контейнера класс invisible. Затем убирает
-     * обработчики событий и обнуляет текущую фотографию.
-     */
+   * доб у оверлея класс invisible и обнуляет текущую фотографию.
+   */
   Gallery.prototype.hideGallery = function() {
     this.element.classList.add('invisible');
     this._invisible = true;
@@ -99,11 +111,9 @@
   Gallery.prototype._showCurrentPhoto = function() {
     this._pictureElement.innerHTML = '';
 
-    var imageElement = new Image();
-    imageElement.src = this._photos[this._currentPhoto];
-    imageElement.onload = function() {
-      this._pictureElement.appendChild(imageElement);
-    }.bind(this);
+    var imageElement = new GalleryPicture({ model: this._photos.at(this._currentPhoto) });
+    imageElement.render();
+    this._pictureElement.appendChild(imageElement.el);
   };
 
   /**
@@ -179,6 +189,13 @@
     this._showCurrentPhoto();
   };
 
+  /**
+   * Здесь все обрабочики(а не во внешних модулях)
+   * незнаю что делает event.stopPropagation();
+   * а так, если нет галлереи — то создаем, устанавливаем фото, и покажываем щелкнутую
+   * если есть — просто меняем фото
+   * @param {event} event
+   */
   var galleryInstance;
 
   document.querySelector('.photogallery').addEventListener('click', function(event) {
@@ -186,6 +203,7 @@
     event.preventDefault();
     if (!galleryInstance) {
       galleryInstance = new Gallery();
+      // galleryInstance.setPhotos(view.model.get('pictures'));
       galleryInstance.setPhotos();
       galleryInstance.showGallery(event.target);
     } else {

@@ -1,13 +1,13 @@
 'use strict';
 
 /**
-*  вызов ананимной функции
-*/
+ *  вызов ананимной функции
+ */
 (function() {
   /**
-  *  Поиск и загрузка всех элементов формы
-  * @type {Element}
-  */
+   *  Поиск и загрузка всех элементов формы
+   * @type {Element}
+   */
   var formContainer = document.querySelector('.overlay-container');
   var formOpenButton = document.querySelector('.reviews-controls-new');
   var formCloseButton = document.querySelector('.review-form-close');
@@ -17,14 +17,14 @@
   var reviewText = document.getElementById('review-text');
 
   /**
-  *  Установка параметра required текстовым полям
-  */
+   *  Установка параметра required текстовым полям
+   */
   reviewName.required = true;
   reviewText.required = true;
 
   /**
-  *  Функция проверки длинны набранного текста + скрытия лейблов
-  */
+   *  Функция проверки длинны набранного текста + скрытия лейблов
+   */
   function checkValues() {
     var reviewNameLabel = reviewForm.getElementsByClassName('review-fields-name')[0];
     if (reviewName.value.length) {
@@ -48,11 +48,9 @@
     checkValues();
   };
 
-
   function setCookieFun(name, value, expires) {
     document.cookie = name + '=' + escape(value) + ((expires) ? '; expires=' + expires : '');
   }
-
 
   reviewName.value = docCookies.getItem('reviewNameCook');
 
@@ -61,7 +59,6 @@
     var selectedRadio = reviewForm.querySelector('input[name="review-mark"][value="' + savedScoreValue + '"]');
     selectedRadio.setAttribute('checked', true);
   }
-
 
   reviewForm.onsubmit = function(e) {
     e.preventDefault();
@@ -74,10 +71,8 @@
     setCookieFun('radioValCook', reviewScoreValue, exDate.toUTCString());
     setCookieFun('reviewNameCook', currentName, exDate.toUTCString());
 
-
     reviewForm.submit();
   };
-
 
 //  появление формы
   formOpenButton.onclick = function(evt) {
@@ -90,6 +85,5 @@
     evt.preventDefault();
     formContainer.classList.add('invisible');
   };
-
 
 })();
