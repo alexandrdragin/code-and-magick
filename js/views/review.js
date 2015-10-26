@@ -163,6 +163,6 @@
   };
 
   // Экспорт конструктора объекта Review в глобальную область видимости.
-  window.Review = Review;
+  window.ReviewView = ReviewView;
 
 })();
