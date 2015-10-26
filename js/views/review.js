@@ -42,7 +42,7 @@
       this._onModelDislike = this._onModelDislike.bind(this);
       this._onClick = this._onClick.bind(this);
 
-      this.model.on('change:liked', this._onModelLike);
+      this.model.on('change:liked' || 'change:disliked', this._onModelLike);
     },
 
     /**

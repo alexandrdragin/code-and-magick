@@ -3,6 +3,10 @@
 //  вызов анонимной функции
 (function() {
 
+  /**
+   *  Поиск и загрузка облаков, установка видимости и времени
+   * @type {Element}, {true}, {null},
+   */
   var headerClouds = document.querySelector('.header-clouds');
   var isWeSeeClouds = true;
   var checkTime = null;
