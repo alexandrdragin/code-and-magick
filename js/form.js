@@ -40,14 +40,23 @@
     }
   }
 
+  /**
+   *  Запуск проверки Имени по нажатой клавише
+   */
   reviewName.onkeyup = function() {
     checkValues();
   };
 
+  /**
+   *  Запуск проверки текста по нажатой клавише
+   */
   reviewText.onkeyup = function() {
     checkValues();
   };
 
+  /**
+   *  Функиция записи в cookie
+   */
   function setCookieFun(name, value, expires) {
     document.cookie = name + '=' + escape(value) + ((expires) ? '; expires=' + expires : '');
   }
@@ -60,6 +69,11 @@
     selectedRadio.setAttribute('checked', true);
   }
 
+  /**
+   *  поведение по отправке, стоп
+   *  установка времени хранения, запись значения оценки
+   *  Запись имени, и сохрание в cookie и отпарвка
+   */
   reviewForm.onsubmit = function(e) {
     e.preventDefault();
     var now = new Date();
@@ -74,13 +88,17 @@
     reviewForm.submit();
   };
 
-//  появление формы
+  /**
+   *  появление формы
+   */
   formOpenButton.onclick = function(evt) {
     evt.preventDefault();
     formContainer.classList.remove('invisible');
   };
 
-// скрытие формы
+  /**
+   *  скрытие формы
+   */
   formCloseButton.onclick = function(evt) {
     evt.preventDefault();
     formContainer.classList.add('invisible');
