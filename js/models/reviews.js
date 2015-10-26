@@ -6,14 +6,11 @@
 сделав его ссылкой на модель отзыва.
 */
 
-/* global Backbone: true ReviewModel: true  */
+/* global Backbone: true ReviewsCollection: true  */
 
 'use strict';
 
-/**
- * Вызов анонимной функции
- */
-(function() {
+(function(){
   /**
    * @constructor
    * @param {Object} attributess
@@ -25,4 +22,4 @@
   });
 
   window.ReviewsCollection = ReviewsCollection;
-});
+})();
