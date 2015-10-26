@@ -64,7 +64,7 @@
       var el;
       while ((el = renderedReviews.shift())) {
       // чистим контейнер
-      el.unrender();
+        el.unrender();
       }
 
       reviewContainer.classList.remove('invisible');
