@@ -407,11 +407,11 @@ define(function() {
           this.ctx.font = 'bold 30px PT Mono';
           this.ctx.textAlign = 'center';
           this.ctx.fillStyle = 'Black';
-          this.ctx.fillText('Слил', 320, 100);
+          this.ctx.fillText('Слил', 350, 80);
 
           this.ctx.font = 'normal normal 16px PT Mono';
           this.ctx.textAlign = 'center';
-          this.ctx.fillText('Пробел для попробывать еще', 350, 100);
+          this.ctx.fillText('стыдоба, перезагружай страницу', 350, 120);
 
           break;
         case Verdict.PAUSE:
