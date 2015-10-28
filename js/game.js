@@ -380,9 +380,9 @@ define(function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
           console.log('you have won!');
-          this.ctx.fillStyle ='rgba(0, 0, 0, 0.7)';
+          this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
           this.ctx.fillRect(210, 30, 300, 150);
-          this.ctx.fillStyle ='white';
+          this.ctx.fillStyle = 'white';
           this.ctx.fillRect(200, 20, 300, 150);
           this.ctx.fill();
 
@@ -398,9 +398,9 @@ define(function() {
 
         case Verdict.FAIL:
           console.log('you have failed!');
-          this.ctx.fillStyle ='rgba(0, 0, 0, 0.7)';
+          this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
           this.ctx.fillRect(210, 30, 300, 150);
-          this.ctx.fillStyle ='white';
+          this.ctx.fillStyle = 'white';
           this.ctx.fillRect(200, 20, 300, 150);
           this.ctx.fill();
 
@@ -416,9 +416,9 @@ define(function() {
           break;
         case Verdict.PAUSE:
           console.log('game is on pause!');
-          this.ctx.fillStyle ='rgba(0, 0, 0, 0.7)';
+          this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
           this.ctx.fillRect(210, 30, 300, 150);
-          this.ctx.fillStyle ='white';
+          this.ctx.fillStyle = 'white';
           this.ctx.fillRect(200, 20, 300, 150);
           this.ctx.fill();
 
@@ -435,9 +435,9 @@ define(function() {
 
         case Verdict.INTRO:
           console.log('welcome to the game! Press Space to start');
-          this.ctx.fillStyle ='rgba(0, 0, 0, 0.7)';
+          this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
           this.ctx.fillRect(210, 30, 300, 150);
-          this.ctx.fillStyle ='white';
+          this.ctx.fillStyle = 'white';
           this.ctx.fillRect(200, 20, 300, 150);
           this.ctx.fill();
 
@@ -726,6 +726,6 @@ define(function() {
 
   Game.Verdict = Verdict;
   return Game;
-  return Verdict
+  return Verdict;
 
 });
