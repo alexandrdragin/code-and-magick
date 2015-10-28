@@ -20,11 +20,12 @@
   }
 
   function checkVisbility() {
-    if (isWeSeeClouds300()) {
+    if (!isWeSeeClouds300()) {
+      window.dispatchEvent(new CustomEvent('disappear'));
+      game.setGameStatus(Game.Verdict.PAUSE);
+    } else {
       isWeSeeClouds = true;
       game.setGameStatus(Game.Verdict.CONTINUE);
-    } else {
-      window.dispatchEvent(new CustomEvent('disappear'));
     }
   }
 
@@ -43,11 +44,11 @@
 
     window.addEventListener('disappear', function() {
       isWeSeeClouds = false;
-      game.setGameStatus(Game.Verdict.PAUSE);
     });
   }
 
   initScroll();
+
 
   var game = new Game(document.querySelector('.demo'));
 
