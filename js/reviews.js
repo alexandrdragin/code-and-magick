@@ -197,8 +197,6 @@
      * запись с помощью метода ресет(из бэкбона) в коллекцию
      */
     reviewsCollection.reset(list);
-    localStorage.setItem('filterID', filterID);
-    // return filteredReviews;
   }
 
   /**
@@ -208,15 +206,26 @@
    * произошел ли клик по фильтру или нет и если да, то вызывается функция
    * установки фильтра.
    */
+
   function startFilters() {
     var filterElements = document.querySelector('.reviews-filter');
-      // добовлям обработчик события которая запускает сетАктивФильтер
+    filterElements['reviews'].value = parseURL();
     filterElements.addEventListener('click', function(evt) {
-      var clickedFilter = evt.target;
-      if (clickedFilter.hasAttribute('for')) {
-        setActiveFilter(clickedFilter.getAttribute('for'));
+      if (evt.target.name === 'reviews') {
+        location.hash = 'filters/' + evt.target.value;
       }
     });
+  }
+
+  function parseURL() {
+    var filterHash = location.hash.match(/^#filters\/(\S+)$/);
+    if (filterHash) {
+      setActiveFilter(filterHash[1]);
+      return filterHash[1];
+    } else {
+      setActiveFilter('sort-by-default');
+      return 'sort-by-default';
+    }
   }
   /**
    * Проверяет можно ли отрисовать следующую страницу списка отелей.
@@ -248,19 +257,15 @@
     loadingReviews(currentPage, true);
   }
 
-//  startFilters();
-//  moreReview();
-
 // вызываю феч, в котором сохраняю бекап, вызываю подпиcки
   reviewsCollection.fetch({ timeout: requestFailureTimeout }).success(function(loaded, state, jqXHR) {
     initiallyLoaded = jqXHR.responseJSON;
+    window.addEventListener('hashchange', parseURL);
     startFilters();
     moreReview();
 
-    setActiveFilter(localStorage.getItem('filterID') || 'reviews-all');
-    reviewForm.querySelector('input[name="reviews"][value="' + localStorage.getItem('filterID') || 'reviews-all' + '"]').checked = true;
   }).fail(function() {
-    showLoadFailure();
-  });
+  showLoadFailure();
+});
 
 })();

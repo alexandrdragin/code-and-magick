@@ -54,9 +54,29 @@
    */
 
   Gallery.prototype.setPhotos = function(photos) {
-    this._photos.reset(photos(function(photoSrc) {
+    var images = document.querySelectorAll('.photogallery-image');
+    var imageUrls = [];
+    for (var i = 0; i < images.length; i++) {
+      var videoData = images[i].dataset;
+      var imagesNodes = images[i].querySelector('.photogallery-image img');
+
+      if (videoData['replacementVideo']) {
+        imageUrls.push({
+          url: videoData['replacementVideo'],
+          preview: imagesNodes.src
+        });
+      } else {
+        imageUrls.push({
+          url: imagesNodes.src
+        });
+      }
+    }
+
+
+    this._photos.reset(photos(function(photo) {
       return new Backbone.Model({
-        url: photoSrc
+        url: photos.url,
+        preview: photos.preview
       });
     }));
   };
@@ -185,9 +205,32 @@
       return;
     }
 
+    var previewNumberContainer = this._pictureElement.children[0].cloneNode(true);
+    var numberCurrent = previewNumberContainer.querySelector('.preview-number-current');
+    var numberTotal = previewNumberContainer.querySelector('.preview-number-total');
+
     this._currentPhoto = index;
     this._showCurrentPhoto();
-  };
+
+    var imageArray = this._photos.at(this._currentPhoto);
+    var imageElement;
+
+    if (imageArray.get('preview')) {
+      imageElement = new VideoView({
+        model: imageArray
+      });
+    } else {
+      imageElement = new GalleryPicture({
+        model: imageArray
+      });
+    };
+
+
+    imageElement.render();
+    this._pictureElement.appendChild(previewNumberContainer);
+    this._pictureElement.appendChild(imageElement.el);
+
+    };
 
   /**
    * Здесь все обрабочики(а не во внешних модулях)
@@ -210,5 +253,8 @@
       galleryInstance.showPhoto(event.target);
     }
   });
+
+
+  window.Gallery = Gallery;
 
 })();

@@ -36,10 +36,10 @@
      * @override
      */
     initialize: function() {
-      this._onImageLoad = this._onImageLoad.bind(this);
-      this._onImageFail = this._onImageFail.bind(this);
+      //this._onImageLoad = this._onImageLoad.bind(this);
+      //this._onImageFail = this._onImageFail.bind(this);
       this._onModelLike = this._onModelLike.bind(this);
-      this._onModelDislike = this._onModelDislike.bind(this);
+      //this._onModelDislike = this._onModelDislike.bind(this);
       this._onClick = this._onClick.bind(this);
 
       this.model.on('change:liked' || 'change:disliked', this._onModelLike);
@@ -74,93 +74,91 @@
    * они берутся не из аргумента итератора, а хранятся в объекте Review в свойстве data_.
    * @param  {Element|DocumentFragment} container
    */
-  render: function() {
-    // Клонирование нового объекта для Review из шаблона и заполнение его реальными
-    // данными, взятыми из свойства data_ созданного конструктором.
-    this.el.appendChild(reviewTemplate.content.children[0].cloneNode(true));
+    render: function() {
+      // Клонирование нового объекта для Review из шаблона и заполнение его реальными
+      // данными, взятыми из свойства data_ созданного конструктором.
+      this.$el.html(reviewTemplate.content.children[0].cloneNode(true));
 
-    this.el.querySelector('.review-rating').classList.add(ratingClass[this.model.get['rating']]);
-    this.el.querySelector('.review-text').textContent = this.model.get['description'];
+      this.$el.find('.review-rating').addClass(ratingClass[this.model.get('rating')]);
+      this.$el.find('.review-text').text(this.model.get('description'));
 
-    // Добавление в контейнер.
-    container.appendChild(newReviewData);
+      if (this.model.get('author')['picture']) {
+        var authorImages = this.$el.find('.review-author')[0];
+        var tempImages = new Image();
+        tempImages.onload = function() {
+          authorImages.src = this.model.get('author')['picture'];
+          authorImages.title = this.model.get('author')['name'];
+          authorImages.width = 124;
+          authorImages.height = 124;
+        }.bind(this);
 
-    if (this.model.get['author']['picture']) {
-      var authorImages = this.el.querySelector('.review-author');
-      var tempImages = new Image();
-      tempImages.onload = function() {
-        authorImages.src = this.model.get['author']['picture'];
-        authorImages.title = this.model.get['author']['name'];
-        authorImages.width = 124;
-        authorImages.height = 124;
-      }.bind(this);
+        tempImages.onerror = function() {
+          authorImages.remove();
+        };
 
-      tempImages.onerror = function() {
-        authorImages.remove();
-      };
+        tempImages.src = this.model.get('author')['picture'];
 
-      tempImages.src = this.model.get['author']['picture'];
-
-      this._element = newReviewData;
-      // Обработчик клика ???
-      this._element.addEventListener('click', this._onClick);
-    }
-  }
+         // Обработчик клика ???
+         // this._element.addEventListener('click', this._onClick);
+        return this;
+      }
+    },
 
   /**
      * Обработчик кликов по элементу.
      * @param {MouseEvent} evt
      * @private
      */
-  _onClick: function(evt) {
-    var clickedElement = evt.target;
+    _onClick: function(evt) {
+      var clickedElement = evt.target;
 
-    // Клик по да/нет, добавляет класс.
-    if (evt.target.classList.contains('review-quiz-answer') && (evt.target.contains('Да')) {
-      this.model.like();
-      evt.target.classList.add('clicked');
+      // Клик по да/нет, добавляет класс.
+      if (evt.target.classList.contains('review-quiz-answer') && evt.target.contains('Да')) {
+        this.model.like();
+        evt.target.classList.add('clicked');
+      }
+      if (evt.target.classList.contains('review-quiz-answer') && evt.target.contains('Нет')) {
+        this.model.dislike();
+        evt.target.classList.add('clicked');
+      }
+    },
+
+    /**
+     * @private
+     */
+    _onModelLike: function() {
+      this._updateLike();
+    },
+
+    /**
+     * @private
+     */
+    _updateLike: function() {
+      var quiz = this.el.querySelector('.review-quiz');
+      var quizAnswer = this.el.querySelector('.review-quiz-answer');
+
+      if (quizAnswer.classList.toggle('clicked')) {
+        quiz.classList.add('invisible');
+      }
+    },
+
+    /**
+     * Удаление DOM-элемента отеля и удаление обработчика события клика.
+     */
+    unrender: function() {
+      this._element.parentNode.removeChild(this._element);
+      this._element.removeEventListener('click', this._onClick);
+      this._element = null;
+    },
+
+    /**
+     * Возвращает список фотографий текущего Review, получив его из объекта data_.
+     * @return {Array.<string>}
+     */
+    getPhotos: function() {
+      return this.model.get.pictures;
     }
-    if (evt.target.classList.contains('review-quiz-answer') && (evt.target.contains('Нет')) {
-      this.model.dislike();
-      evt.target.classList.add('clicked');
-    }
-  },
-
-  /**
-   * @private
-   */
-  _onModelLike: function() {
-    this._updateLike();
-  },
-
-  /**
-   * @private
-   */
-  _updateLike: function() {
-    var quiz = this.el.querySelector('.review-quiz');
-    var quizAnswer = this.el.querySelector('.review-quiz-answer');
-
-    if (quizAnswer.classList.toggle('clicked')) {
-      quiz.classList.add('invisible');
-    }
-  },
-
-  /**
-   * Удаление DOM-элемента отеля и удаление обработчика события клика.
-   */
-  unrender: function() {
-    this._element.parentNode.removeChild(this._element);
-    this._element.removeEventListener('click', this._onClick);
-    this._element = null;
-  };
-
-  /**
-   * Возвращает список фотографий текущего Review, получив его из объекта data_.
-   * @return {Array.<string>}
-   */
-  Review.prototype.getPhotos = function() {
-    return this.model.get.pictures;
-  };
+  });
 
   // Экспорт конструктора объекта Review в глобальную область видимости.
   window.ReviewView = ReviewView;

@@ -20,16 +20,36 @@
 
 (function() {
   var GalleryVideo = Backbone.View.extend({
-    tagName: 'img',
+
+    initialize: function() {
+      this._onClickVideo = this._onClickVideo.bind(this);
+    },
+
+    events: {
+      'click': '_onClickVideo'
+    },
 
     render: function() {
-      this.document.createElement('video') = this.model.get('url');
-      this.controls = false;
-      this.loop = true;
-      this.poster = this.model.get('url');
-      this.preview = this.model.get('url');
+      var videoElement = document.createElement('video');
+      videoElement.src = this.model.get('url');
+      videoElement.autoplay = true;
+      videoElement.poster = this.model.get('preview');
+      videoElement.loop = true;
+      videoElement.controls = false;
+      videoElement.addEventListener('click', this._onClickVideo);
+      this.el = videoElement;
+    },
+
+    _onClickVideo: function(evt) {
+      if (evt.target === this.el) {
+        if (this.el.paused) {
+          this.el.play();
+        } else {
+          this.el.pause();
+        }
+      }
     }
   });
 
-    window.GalleryVideo = GalleryVideo;
+  window.GalleryVideo = GalleryVideo;
 })();

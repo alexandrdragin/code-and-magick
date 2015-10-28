@@ -719,9 +719,11 @@
     }
   };
 
+
   window.Game = Game;
   window.Game.Verdict = Verdict;
 
   var game = new Game(document.querySelector('.demo'));
+
 
 })();

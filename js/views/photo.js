@@ -15,5 +15,5 @@
     }
   });
 
-    window.GalleryPicture = GalleryPicture;
+  window.GalleryPicture = GalleryPicture;
 })();
