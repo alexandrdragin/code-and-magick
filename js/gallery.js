@@ -1,31 +1,21 @@
-/* global GalleryPicture: true */
+/* global GalleryVideo: true  GalleryPicture: true */
 
 'use strict';
 
 //  вызов анонимной функции
 (function() {
 
-  /**
-   * Список констант кодов нажатых клавиш для обработки
-   * клавиатурных событий.
-   * @enum {number}
-   */
   var Key = {
     'ESC': 27,
     'LEFT': 37,
     'RIGHT': 39
   };
 
-  /**
-   * Конструктор объекта фотогалереи. Создает свойства, хранящие ссылки на элементы
-   * галереи, служебные данные (номер показанной фотографии и список фотографий)
-   * и фиксирует контекст у обработчиков событий.
-   * @constructor
-   */
+// создает конструктор галереи со свойствами
+
   var Gallery = function() {
 
     this._photos = new Backbone.Collection();
-
     // блок со всеми фото
     this.photogalleryContainer = document.querySelector('.photogallery');
     //блок оверлея
@@ -38,7 +28,7 @@
     this._rightButton = this.element.querySelector('.overlay-gallery-control-right');
 
     this._currentPhoto = 0;
-    this._photos = [];
+
     // привязывалка
 
     this._onCloseClick = this._onCloseClick.bind(this);
@@ -48,12 +38,47 @@
   };
 
   /**
-   * Этератор массива на обьекте (коллекции) с контекстом(1 аргумент) через функцию из протопипа
-   * Записывает список фотографий. и их срц
+     * Показывает фотогалерею, убирая у контейнера класс invisible. Затем добавляет
+     * обработчики событий и показывает текущую фотографию.
+     */
+  Gallery.prototype.showGallery = function(img) {
+    this.element.classList.remove('invisible');
+    this._invisible = false;
+    this._closeButtton.addEventListener('click', this._onCloseClick);
+    this._leftButton.addEventListener('click', this._onLeftButtonClick);
+    this._rightButton.addEventListener('click', this._onRightButtonClick);
+    document.body.addEventListener('keydown', this._onKeyDown);
+
+    this.showPhoto(img);
+
+  };
+
+  /**
+     * Наоборот, доб у контейнера класс invisible. Затем убирает
+     * обработчики событий и обнуляет текущую фотографию.
+     */
+  Gallery.prototype.hideGallery = function() {
+    this.element.classList.add('invisible');
+    this._invisible = true;
+
+    this._closeButtton.removeEventListener('click', this._onCloseClick);
+    this._leftButton.removeEventListener('click', this._onRightButtonClick);
+    this._rightButton.removeEventListener('click', this._onRightButtonClick);
+    document.body.removeEventListener('keydown', this._onDocumentKeyDown);
+
+    this._photos.reset();
+    this._currentPhoto = 0;
+  };
+
+  /**этератор массива на обьекте (коллекции) с контекстом(1 аргумент) через функцию из протопипа
+   * Записывает список фотографий.
    * @param {Array.<string>} photos
    */
-
-  Gallery.prototype.setPhotos = function(photos) {
+  Gallery.prototype.setPhotos = function() {
+    //var arr = Array.prototype.slice.call(this.photogalleryContainer.querySelectorAll('img'), 0);
+    //this._photos = arr.map(function(img) {
+    //  return img.getAttribute('src');
+    //});
     var images = document.querySelectorAll('.photogallery-image');
     var imageUrls = [];
     for (var i = 0; i < images.length; i++) {
@@ -72,8 +97,7 @@
       }
     }
 
-
-    this._photos.reset(photos(function(photo) {
+    this._photos.reset(imageUrls.map(function(photos) {
       return new Backbone.Model({
         url: photos.url,
         preview: photos.preview
@@ -81,26 +105,6 @@
     }));
   };
 
-  /**
-   * Показывает фотогалерею, убирая у контейнера класс invisible. Затем добавляет
-   * обработчики событий и показывает текущую фотографию.
-   * @param {Image} img
-   */
-  Gallery.prototype.showGallery = function(img) {
-    this.element.classList.remove('invisible');
-    this._invisible = false;
-    this._closeButtton.addEventListener('click', this._onCloseClick);
-    this._leftButton.addEventListener('click', this._onLeftButtonClick);
-    this._rightButton.addEventListener('click', this._onRightButtonClick);
-    document.body.addEventListener('keydown', this._onKeyDown);
-
-    this.showPhoto(img);
-  };
-
-  /**
-   * ловит img и показывает его через номер по индексу.
-   * @param {Image} img
-   */
   Gallery.prototype.showPhoto = function(img) {
     this.element.classList.remove('invisible');
     this._invisible = false;
@@ -111,15 +115,7 @@
 
     this._showCurrentPhoto();
   };
-  /**
-   * доб у оверлея класс invisible и обнуляет текущую фотографию.
-   */
-  Gallery.prototype.hideGallery = function() {
-    this.element.classList.add('invisible');
-    this._invisible = true;
 
-    this._currentPhoto = 0;
-  };
 
   /**
    * Приватный метод, показывающий текущую фотографию. Убирает предыдущюю
@@ -131,9 +127,22 @@
   Gallery.prototype._showCurrentPhoto = function() {
     this._pictureElement.innerHTML = '';
 
-    var imageElement = new GalleryPicture({ model: this._photos.at(this._currentPhoto) });
+    var imageArray = this._photos.at(this._currentPhoto);
+    var imageElement;
+
+    if (imageArray.get('preview')) {
+      imageElement = new GalleryVideo({
+        model: imageArray
+      });
+    } else {
+      imageElement = new GalleryPicture({
+        model: imageArray
+      });
+    }
+
     imageElement.render();
     this._pictureElement.appendChild(imageElement.el);
+
   };
 
   /**
@@ -205,40 +214,11 @@
       return;
     }
 
-    var previewNumberContainer = this._pictureElement.children[0].cloneNode(true);
-    var numberCurrent = previewNumberContainer.querySelector('.preview-number-current');
-    var numberTotal = previewNumberContainer.querySelector('.preview-number-total');
-
     this._currentPhoto = index;
     this._showCurrentPhoto();
 
-    var imageArray = this._photos.at(this._currentPhoto);
-    var imageElement;
+  };
 
-    if (imageArray.get('preview')) {
-      imageElement = new VideoView({
-        model: imageArray
-      });
-    } else {
-      imageElement = new GalleryPicture({
-        model: imageArray
-      });
-    };
-
-
-    imageElement.render();
-    this._pictureElement.appendChild(previewNumberContainer);
-    this._pictureElement.appendChild(imageElement.el);
-
-    };
-
-  /**
-   * Здесь все обрабочики(а не во внешних модулях)
-   * незнаю что делает event.stopPropagation();
-   * а так, если нет галлереи — то создаем, устанавливаем фото, и покажываем щелкнутую
-   * если есть — просто меняем фото
-   * @param {event} event
-   */
   var galleryInstance;
 
   document.querySelector('.photogallery').addEventListener('click', function(event) {
@@ -246,15 +226,11 @@
     event.preventDefault();
     if (!galleryInstance) {
       galleryInstance = new Gallery();
-      // galleryInstance.setPhotos(view.model.get('pictures'));
       galleryInstance.setPhotos();
       galleryInstance.showGallery(event.target);
     } else {
       galleryInstance.showPhoto(event.target);
     }
   });
-
-
-  window.Gallery = Gallery;
 
 })();
