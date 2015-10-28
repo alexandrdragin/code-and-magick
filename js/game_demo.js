@@ -1,3 +1,5 @@
+/* global Game: true */
+
 'use strict';
 
 //  вызов анонимной функции
@@ -20,12 +22,11 @@
   }
 
   function checkVisbility() {
-    if (!isWeSeeClouds300()) {
-      window.dispatchEvent(new CustomEvent('disappear'));
-      game.setGameStatus(Game.Verdict.PAUSE);
-    } else {
+    if (isWeSeeClouds300()) {
       isWeSeeClouds = true;
       game.setGameStatus(Game.Verdict.CONTINUE);
+    } else {
+      window.dispatchEvent(new CustomEvent('disappear'));
     }
   }
 
@@ -44,6 +45,7 @@
 
     window.addEventListener('disappear', function() {
       isWeSeeClouds = false;
+      game.setGameStatus(Game.Verdict.PAUSE);
     });
   }
 
@@ -54,6 +56,5 @@
 
   game.initializeLevelAndStart();
   game.setGameStatus(Game.Verdict.INTRO);
-
 
 })();
