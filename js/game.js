@@ -223,7 +223,11 @@
       // уровне равна 2px за кадр.
       {
         direction: Direction.RIGHT,
+<<<<<<< HEAD
         height: 89,
+=======
+        height: 84,
+>>>>>>> js-htmlacademy/master
         speed: 2,
         sprite: 'img/wizard.gif',
         spriteReversed: 'img/wizard-reversed.gif',
@@ -380,6 +384,7 @@
       switch (this.state.currentStatus) {
         case Verdict.WIN:
           console.log('you have won!');
+<<<<<<< HEAD
           this.ctx.fillStyle="rgba(0, 0, 0, 0.7)";
           this.ctx.fillRect(210, 30, 300, 150);
           this.ctx.fillStyle="white";
@@ -447,6 +452,17 @@
           this.ctx.fillText("Шифтом можно выйграть", 350, 120);
           this.ctx.fillText("Пробел для старта", 350, 140);
 
+=======
+          break;
+        case Verdict.FAIL:
+          console.log('you have failed!');
+          break;
+        case Verdict.PAUSE:
+          console.log('game is on pause!');
+          break;
+        case Verdict.INTRO:
+          console.log('welcome to the game! Press Space to start');
+>>>>>>> js-htmlacademy/master
           break;
       }
     },
@@ -507,7 +523,11 @@
         this.state.objects.push({
           direction: me.direction,
           height: 24,
+<<<<<<< HEAD
           speed: 6,
+=======
+          speed: 5,
+>>>>>>> js-htmlacademy/master
           sprite: 'img/fireball.gif',
           type: ObjectType.FIREBALL,
           width: 24,
@@ -724,6 +744,11 @@
   window.Game.Verdict = Verdict;
 
   var game = new Game(document.querySelector('.demo'));
+<<<<<<< HEAD
 
 
+=======
+  game.initializeLevelAndStart();
+  game.setGameStatus(Verdict.INTRO);
+>>>>>>> js-htmlacademy/master
 })();
