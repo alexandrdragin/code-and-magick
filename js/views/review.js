@@ -110,7 +110,7 @@ define(function() {
      * @private
      */
     _onClick: function(evt) {
-      var clickedElement = evt.target;
+      // var clickedElement = evt.target;
 
       // Клик по да/нет, добавляет класс.
       if (evt.target.classList.contains('review-quiz-answer') && evt.target.contains('Да')) {
