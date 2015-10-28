@@ -380,16 +380,16 @@ define(function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
           console.log('you have won!');
-          this.ctx.fillStyle='rgba(0, 0, 0, 0.7)';
+          this.ctx.fillStyle ='rgba(0, 0, 0, 0.7)';
           this.ctx.fillRect(210, 30, 300, 150);
-          this.ctx.fillStyle='white';
+          this.ctx.fillStyle ='white';
           this.ctx.fillRect(200, 20, 300, 150);
           this.ctx.fill();
 
           this.ctx.font = 'bold 30px PT Mono';
           this.ctx.textAlign = 'center';
           this.ctx.fillStyle = 'Black';
-          this.ctx.fillText("Ты выйграл!", 350, 80);
+          this.ctx.fillText('Ты выйграл!', 350, 80);
 
           this.ctx.font = 'normal normal 16px PT Mono';
           this.ctx.textAlign = 'center';
@@ -398,9 +398,9 @@ define(function() {
 
         case Verdict.FAIL:
           console.log('you have failed!');
-          this.ctx.fillStyle='rgba(0, 0, 0, 0.7)';
+          this.ctx.fillStyle ='rgba(0, 0, 0, 0.7)';
           this.ctx.fillRect(210, 30, 300, 150);
-          this.ctx.fillStyle='white';
+          this.ctx.fillStyle ='white';
           this.ctx.fillRect(200, 20, 300, 150);
           this.ctx.fill();
 
@@ -416,9 +416,9 @@ define(function() {
           break;
         case Verdict.PAUSE:
           console.log('game is on pause!');
-          this.ctx.fillStyle='rgba(0, 0, 0, 0.7)';
+          this.ctx.fillStyle ='rgba(0, 0, 0, 0.7)';
           this.ctx.fillRect(210, 30, 300, 150);
-          this.ctx.fillStyle='white';
+          this.ctx.fillStyle ='white';
           this.ctx.fillRect(200, 20, 300, 150);
           this.ctx.fill();
 
@@ -435,9 +435,9 @@ define(function() {
 
         case Verdict.INTRO:
           console.log('welcome to the game! Press Space to start');
-          this.ctx.fillStyle='rgba(0, 0, 0, 0.7)';
+          this.ctx.fillStyle ='rgba(0, 0, 0, 0.7)';
           this.ctx.fillRect(210, 30, 300, 150);
-          this.ctx.fillStyle='white';
+          this.ctx.fillStyle ='white';
           this.ctx.fillRect(200, 20, 300, 150);
           this.ctx.fill();
 
@@ -451,16 +451,6 @@ define(function() {
           this.ctx.fillText('Стрелки помогают для ходьбы', 350, 100);
           this.ctx.fillText('Шифтом можно выйграть', 350, 120);
           this.ctx.fillText('Пробел для старта', 350, 140);
-
-          break;
-        case Verdict.FAIL:
-          console.log('you have failed!');
-          break;
-        case Verdict.PAUSE:
-          console.log('game is on pause!');
-          break;
-        case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
 
           break;
       }
@@ -736,6 +726,6 @@ define(function() {
 
   Game.Verdict = Verdict;
   return Game;
-  return Verdict;
+  return Verdict
 
 });
