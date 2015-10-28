@@ -1,9 +1,10 @@
-/* global ReviewsCollection: true  ReviewView: true */
-
 'use strict';
 
 //  вызов анонимной функции
-(function() {
+define([
+  'models/reviews',
+  'views/review'
+], function(ReviewsCollection, ReviewView) {
 
 //  Прячет блок с фильтрами .reviews-filter, добавляя ему класс invisible.
   var reviewForm = document.querySelector('.reviews-filter');
@@ -234,7 +235,13 @@
    * @return {boolean}
    */
   function isNextPageAvailable() {
-    return currentPage < Math.ceil(ReviewsCollection.length / pageSize);
+    var canShow = currentPage < Math.ceil(ReviewsCollection.length / pageSize);
+
+    if (canShow) {
+      reviewMore.classList.remove('invisible');
+    } else {
+      reviewMore.classList.add('invisible');
+    }
   }
 
 // подгрузка страниц по кнопке работает но не добавляет а перезаписывает
@@ -255,17 +262,21 @@
     currentPage = 0;
     //  возвращаем и отрисовываем
     loadingReviews(currentPage, true);
+    reviewMore.classList.remove('invisible');
   }
+
+  moreReview();
 
 // вызываю феч, в котором сохраняю бекап, вызываю подпиcки
   reviewsCollection.fetch({ timeout: requestFailureTimeout }).success(function(loaded, state, jqXHR) {
     initiallyLoaded = jqXHR.responseJSON;
     window.addEventListener('hashchange', parseURL);
     startFilters();
-    moreReview();
 
   }).fail(function() {
-  showLoadFailure();
-});
+    showLoadFailure();
+  });
 
-})();
+  return ReviewsCollection;
+
+});

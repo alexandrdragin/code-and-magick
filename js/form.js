@@ -3,7 +3,7 @@
 /**
  *  вызов ананимной функции
  */
-(function() {
+define(function() {
   /**
    *  Поиск и загрузка всех элементов формы
    * @type {Element}
@@ -104,4 +104,4 @@
     formContainer.classList.add('invisible');
   };
 
-})();
+});

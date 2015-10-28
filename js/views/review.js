@@ -7,7 +7,7 @@
 
 'use strict';
 
-(function() {
+define(function() {
 
   /**
    * мап для раздвижки звезд по css
@@ -161,6 +161,6 @@
   });
 
   // Экспорт конструктора объекта Review в глобальную область видимости.
-  window.ReviewView = ReviewView;
+  return ReviewView;
 
-})();
+});

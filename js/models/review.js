@@ -4,7 +4,7 @@
 
 'use strict';
 
-(function() {
+define(function() {
    /** расширение модели бэкбона с лайками
     * @constructor
     * @extends {Backbone.Model}
@@ -13,7 +13,6 @@
      /** @override */
     initialize: function() {
       this.set('clicked', false);
-       //  return this.['review-rating'];
     },
 
     like: function() {
@@ -29,5 +28,5 @@
     }
   });
 
-  window.ReviewModel = ReviewModel;
-})();
+  return ReviewModel;
+});

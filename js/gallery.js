@@ -1,9 +1,10 @@
-/* global GalleryVideo: true  GalleryPicture: true */
-
 'use strict';
 
 //  вызов анонимной функции
-(function() {
+define([
+  'views/photo',
+  'views/video'
+], function(GalleryPicture, GalleryVideo) {
 
   var Key = {
     'ESC': 27,
@@ -62,7 +63,7 @@
     this._invisible = true;
 
     this._closeButtton.removeEventListener('click', this._onCloseClick);
-    this._leftButton.removeEventListener('click', this._onRightButtonClick);
+    this._leftButton.removeEventListener('click', this._onLeftButtonClick);
     this._rightButton.removeEventListener('click', this._onRightButtonClick);
     document.body.removeEventListener('keydown', this._onDocumentKeyDown);
 
@@ -233,4 +234,5 @@
     }
   });
 
-})();
+  return Gallery;
+});
