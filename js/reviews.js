@@ -28,7 +28,6 @@ define([
   reviewForm.classList.remove('invisible');
 
   /**
-<<<<<<< HEAD
    * новая сущность?
    * @type {ReviewsCollection}
    */
@@ -57,41 +56,11 @@ define([
     //  фрагмент для ускорения загрузки
     var reviewsFragment = document.createDocumentFragment();
 
-=======
-   * Список отрисованных ревью. Используется для обращения к каждому
-   * из ревью для удаления его со страницы.
-   * @type {Array.<->}
-   */
-  var renderedReviews = [];
-
-
-  /**
-  * Выводит список ревью
-  * @param {Array.<Object>} reviewsToRender
-  * @param {number} pageNumber
-  * @param {boolean=} replace
-  */
-
-  function loadingReviews(reviewsToRender, pageNumber, replace) {
->>>>>>> master
     // проверям тип переменной + тернарный оператор(что делать если ? выполняться: нет;)
     replace = typeof replace !== 'undefined' ? replace : true;
     // нормализация документа(горантирует содержание)
     pageNumber = pageNumber || 0;
 
-<<<<<<< HEAD
-=======
-    if (replace) {
-      var el;
-      while ((el = renderedReviews.shift())) {
-      // чистим контейнер
-        el.unrender();
-      }
-
-      reviewContainer.classList.remove('invisible');
-    }
-
->>>>>>> master
     // выбираем размер страницы
     var reviewsFrom = pageNumber * pageSize;
     var reviewsTo = reviewsFrom + pageSize;
@@ -108,7 +77,6 @@ define([
       }
     }
 
-<<<<<<< HEAD
     reviewsCollection.slice(reviewsFrom, reviewsTo).forEach(function(model) {
       var view = new ReviewView({ model: model });
       // render только создает элемент в памяти, после этого его нужно
@@ -116,13 +84,6 @@ define([
       view.render();
       reviewsFragment.appendChild(view.el);
       renderedReviews.push(view);
-=======
-  //    массив для иттерации
-    reviewsToRender.forEach(function(reviewData) {
-      var newReviewData = new Review(reviewData);
-      newReviewData.render(reviewsFragment);
-      renderedReviews.push(newReviewData);
->>>>>>> master
     });
 
 //  загрузка фрагметна
