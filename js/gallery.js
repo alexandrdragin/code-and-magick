@@ -1,7 +1,10 @@
 'use strict';
 
 //  вызов анонимной функции
-(function() {
+define([
+  'views/photo',
+  'views/video'
+], function(GalleryPicture, GalleryVideo) {
 
   var Key = {
     'ESC': 27,
@@ -12,6 +15,8 @@
 // создает конструктор галереи со свойствами
 
   var Gallery = function() {
+
+    this._photos = new Backbone.Collection();
     // блок со всеми фото
     this.photogalleryContainer = document.querySelector('.photogallery');
     //блок оверлея
@@ -24,24 +29,13 @@
     this._rightButton = this.element.querySelector('.overlay-gallery-control-right');
 
     this._currentPhoto = 0;
-    this._photos = [];
+
     // привязывалка
 
     this._onCloseClick = this._onCloseClick.bind(this);
     this._onLeftButtonClick = this._onLeftButtonClick.bind(this);
     this._onRightButtonClick = this._onRightButtonClick.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
-  };
-
-  /**этератор массива на обьекте (коллекции) с контекстом(1 аргумент) через функцию из протопипа
-   * Записывает список фотографий.
-   * @param {Array.<string>} photos
-   */
-  Gallery.prototype.setPhotos = function() {
-    var arr = Array.prototype.slice.call(this.photogalleryContainer.querySelectorAll('img'), 0);
-    this._photos = arr.map(function(img) {
-      return img.getAttribute('src');
-    });
   };
 
   /**
@@ -57,6 +51,59 @@
     document.body.addEventListener('keydown', this._onKeyDown);
 
     this.showPhoto(img);
+
+  };
+
+  /**
+     * Наоборот, доб у контейнера класс invisible. Затем убирает
+     * обработчики событий и обнуляет текущую фотографию.
+     */
+  Gallery.prototype.hideGallery = function() {
+    this.element.classList.add('invisible');
+    this._invisible = true;
+
+    this._closeButtton.removeEventListener('click', this._onCloseClick);
+    this._leftButton.removeEventListener('click', this._onLeftButtonClick);
+    this._rightButton.removeEventListener('click', this._onRightButtonClick);
+    document.body.removeEventListener('keydown', this._onDocumentKeyDown);
+
+    this._photos.reset();
+    this._currentPhoto = 0;
+  };
+
+  /**этератор массива на обьекте (коллекции) с контекстом(1 аргумент) через функцию из протопипа
+   * Записывает список фотографий.
+   * @param {Array.<string>} photos
+   */
+  Gallery.prototype.setPhotos = function() {
+    //var arr = Array.prototype.slice.call(this.photogalleryContainer.querySelectorAll('img'), 0);
+    //this._photos = arr.map(function(img) {
+    //  return img.getAttribute('src');
+    //});
+    var images = document.querySelectorAll('.photogallery-image');
+    var imageUrls = [];
+    for (var i = 0; i < images.length; i++) {
+      var videoData = images[i].dataset;
+      var imagesNodes = images[i].querySelector('.photogallery-image img');
+
+      if (videoData['replacementVideo']) {
+        imageUrls.push({
+          url: videoData['replacementVideo'],
+          preview: imagesNodes.src
+        });
+      } else {
+        imageUrls.push({
+          url: imagesNodes.src
+        });
+      }
+    }
+
+    this._photos.reset(imageUrls.map(function(photos) {
+      return new Backbone.Model({
+        url: photos.url,
+        preview: photos.preview
+      });
+    }));
   };
 
   Gallery.prototype.showPhoto = function(img) {
@@ -69,16 +116,7 @@
 
     this._showCurrentPhoto();
   };
-  /**
-     * Наоборот, доб у контейнера класс invisible. Затем убирает
-     * обработчики событий и обнуляет текущую фотографию.
-     */
-  Gallery.prototype.hideGallery = function() {
-    this.element.classList.add('invisible');
-    this._invisible = true;
 
-    this._currentPhoto = 0;
-  };
 
   /**
    * Приватный метод, показывающий текущую фотографию. Убирает предыдущюю
@@ -90,11 +128,22 @@
   Gallery.prototype._showCurrentPhoto = function() {
     this._pictureElement.innerHTML = '';
 
-    var imageElement = new Image();
-    imageElement.src = this._photos[this._currentPhoto];
-    imageElement.onload = function() {
-      this._pictureElement.appendChild(imageElement);
-    }.bind(this);
+    var imageArray = this._photos.at(this._currentPhoto);
+    var imageElement;
+
+    if (imageArray.get('preview')) {
+      imageElement = new GalleryVideo({
+        model: imageArray
+      });
+    } else {
+      imageElement = new GalleryPicture({
+        model: imageArray
+      });
+    }
+
+    imageElement.render();
+    this._pictureElement.appendChild(imageElement.el);
+
   };
 
   /**
@@ -168,6 +217,7 @@
 
     this._currentPhoto = index;
     this._showCurrentPhoto();
+
   };
 
   var galleryInstance;
@@ -184,4 +234,5 @@
     }
   });
 
-})();
+  return Gallery;
+});
