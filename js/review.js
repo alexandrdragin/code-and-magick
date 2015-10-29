@@ -1,3 +1,7 @@
+/**
+  * не подлючен, рабочив в view/review
+  */
+
 'use strict';
 
 define(function() {
@@ -15,9 +19,9 @@ define(function() {
   };
 
   /**
-   * @type {Element}
-   */
-   //  шаблон для загрузки
+    * шаблон для загрузки
+    * @type {Element}
+    */
   var reviewTemplate = document.getElementById('review-template');
 
   /**

@@ -238,7 +238,7 @@ define([
    * @return {boolean}
    */
   function isNextPageAvailable() {
-    var canShow = currentPage < Math.ceil(reviewsCollection.length / pageSize) + 1;
+    var canShow = currentPage < Math.ceil(reviewsCollection.length / pageSize);
 
     if (canShow) {
       reviewMoreButton.classList.remove('invisible');

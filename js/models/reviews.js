@@ -6,7 +6,8 @@ define([
   'models/review'
 ], function(ReviewModel) {
   /**
-   * @constructor
+   * @constructor (разширение бекбона по загрузки данных, имя модели чтоб потом поней обращаться
+   * путь и возвращение коллекции в глобальный скоп)
    * @param {Object} attributess
    * @param {Object} options
    */

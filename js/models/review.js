@@ -16,15 +16,11 @@ define(function() {
     },
 
     like: function() {
-      this.set(
-       // this.['review-rating'] + 1
-      );
+      this.set(this.get('review-rating') + 1);
     },
 
     dislike: function() {
-      this.set(
-      //  this.['review-rating'] - 1
-      );
+      this.set(this.get('review-rating') - 1);
     }
   });
 

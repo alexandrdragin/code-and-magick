@@ -1,10 +1,3 @@
-/*
-Создайте модуль js/views/review.js.
- Опишите в нем представление отзыва в списке.
- Добавьте обработчики кликов по ссылкам «Да» и «Нет» в блоке опроса, полезен ли отзыв.
- Обработчики событий должны вызывать соответствующие обновления модели.
-*/
-
 'use strict';
 
 define(function() {
@@ -47,7 +40,7 @@ define(function() {
 
     /**
      * Маппинг событий происходящих на элементе на названия методов обработчиков
-     * событий. ????
+     * событий. ??????????
      * @type {Object.<string, string>}
      */
     events: {
@@ -98,8 +91,6 @@ define(function() {
 
         tempImages.src = this.model.get('author')['picture'];
 
-         // Обработчик клика ???
-         // this._element.addEventListener('click', this._onClick);
         return this;
       }
     },
@@ -110,8 +101,6 @@ define(function() {
      * @private
      */
     _onClick: function(evt) {
-      // var clickedElement = evt.target;
-
       // Клик по да/нет, добавляет класс.
       if (evt.target.classList.contains('review-quiz-answer-yes')) {
         this.model.like();
