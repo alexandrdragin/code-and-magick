@@ -115,7 +115,7 @@ define([
       // При сортировке по дате сравниваем валюОф а не сами даты
       // если данных нет то все идет вниз
       case 'reviews-recent':
-          list.sort(function(a, b) {
+        list.sort(function(a, b) {
           var firstDate = (new Date(a.view)).valueOf();
           var secondDate = (new Date(b.view)).valueOf();
           if (firstDate > secondDate) {
@@ -154,7 +154,7 @@ define([
         break;
 
       case 'reviews-bad':
-          list.filter(function(a) {
+        list.filter(function(a) {
           return a.rating < 3;
         });
         list.sort(function(a, b) {
