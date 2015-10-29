@@ -66,7 +66,7 @@ define([
     this._leftButton.removeEventListener('click', this._onLeftButtonClick);
     this._rightButton.removeEventListener('click', this._onRightButtonClick);
     this._onKeyDown.removeEventListener('keydown', this._onDocumentKeyDown);
-  
+    this._photos.reset();
     this._currentPhoto = 0;
   };
 
