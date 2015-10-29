@@ -22,7 +22,6 @@ define([
   var reviewContainer = document.querySelector('.reviews-list');
 
   //  шаблон для загрузки
-  var filteredReviews;
   var currentPage = 0;
 
   reviewForm.classList.remove('invisible');
@@ -239,13 +238,14 @@ define([
    * @return {boolean}
    */
   function isNextPageAvailable() {
-    var canShow = currentPage < Math.ceil(ReviewsCollection.length / pageSize);
+    var canShow = currentPage < Math.ceil(reviewsCollection.length / pageSize) + 1;
 
     if (canShow) {
       reviewMoreButton.classList.remove('invisible');
     } else {
       reviewMoreButton.classList.add('invisible');
     }
+    return canShow;
   }
 
   /**
@@ -258,7 +258,7 @@ define([
   function moreReview() {
     reviewMoreButton.addEventListener('click', function() {
       if (isNextPageAvailable()) {
-        loadingReviews(filteredReviews, currentPage++, false);
+        loadingReviews(currentPage++, false);
       }
     });
   }
