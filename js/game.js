@@ -726,6 +726,5 @@ define(function() {
 
   Game.Verdict = Verdict;
   return Game;
-  return Verdict;
-
+  
 });

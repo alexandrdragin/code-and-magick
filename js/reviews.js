@@ -11,17 +11,17 @@ define([
   reviewForm.classList.add('invisible');
 
 //  кнопка показать еще
-  var reviewMore = document.querySelector('.reviews-controls-more');
-  reviewMore.classList.remove('invisible');
+  var reviewMoreButton = document.querySelector('.reviews-controls-more');
+  reviewMoreButton.classList.remove('invisible');
 
-  //  константа таймаута
+  //  константа таймаута и размер страницы
   var requestFailureTimeout = 10000;
   var pageSize = 3;
 
   //  контейнер для вставки данных
   var reviewContainer = document.querySelector('.reviews-list');
-  //  шаблон для загрузки
 
+  //  шаблон для загрузки
   var filteredReviews;
   var currentPage = 0;
 
@@ -115,8 +115,7 @@ define([
       // При сортировке по дате сравниваем валюОф а не сами даты
       // если данных нет то все идет вниз
       case 'reviews-recent':
-        //filteredReviews = filteredReviews.sort(function(a, b) {
-        list.sort(function(a, b) {
+          list.sort(function(a, b) {
           var firstDate = (new Date(a.view)).valueOf();
           var secondDate = (new Date(b.view)).valueOf();
           if (firstDate > secondDate) {
@@ -155,8 +154,7 @@ define([
         break;
 
       case 'reviews-bad':
-      //  filteredReviews = filteredReviews.filter(function(a) {
-        list.filter(function(a) {
+          list.filter(function(a) {
           return a.rating < 3;
         });
         list.sort(function(a, b) {
@@ -195,7 +193,7 @@ define([
     }
 
     /**
-     * запись с помощью метода ресет(из бэкбона) в коллекцию
+     * запись отфильтринного с помощью метода reset(из бэкбона) в коллекцию
      */
     reviewsCollection.reset(list);
   }
@@ -218,6 +216,10 @@ define([
     });
   }
 
+  /**
+   * Функция по включению сортировки если в урл есть #filters и любые символы
+   * если нет то дефолт
+   */
   function parseURL() {
     var filterHash = location.hash.match(/^#filters\/(\S+)$/);
     if (filterHash) {
@@ -228,30 +230,40 @@ define([
       return 'sort-by-default';
     }
   }
+
   /**
    * Проверяет можно ли отрисовать следующую страницу списка отелей.
    * (те проверяет последняя отрисованная страница
-   * должна быть меньше количество ревью поделенная на размер страницы + округление вврех)
+   * должна быть меньше количество ревью поделенная на размер страницы + округление вверх)
+   * если показывать нечего скрываем кнопку
    * @return {boolean}
    */
   function isNextPageAvailable() {
     var canShow = currentPage < Math.ceil(ReviewsCollection.length / pageSize);
 
     if (canShow) {
-      reviewMore.classList.remove('invisible');
+      reviewMoreButton.classList.remove('invisible');
     } else {
-      reviewMore.classList.add('invisible');
+      reviewMoreButton.classList.add('invisible');
     }
   }
 
-// подгрузка страниц по кнопке работает но не добавляет а перезаписывает
+  /**
+   * подгрузка страниц по кнопке иф isNextPageAvailable, то
+   * добовляем по фильтру
+   * +1 страница
+   * не реплейс
+   * @return {boolean}
+   */
   function moreReview() {
-    reviewMore.addEventListener('click', function() {
+    reviewMoreButton.addEventListener('click', function() {
       if (isNextPageAvailable()) {
         loadingReviews(filteredReviews, currentPage++, false);
       }
     });
   }
+
+  moreReview();
 
   /**
    * Вызывает функцию сортировки, берет список ревью фильтурет по правилам с переданным fitlerID
@@ -262,12 +274,12 @@ define([
     currentPage = 0;
     //  возвращаем и отрисовываем
     loadingReviews(currentPage, true);
-    reviewMore.classList.remove('invisible');
+    reviewMoreButton.classList.remove('invisible');
   }
 
-  moreReview();
-
-// вызываю феч, в котором сохраняю бекап, вызываю подпиcки
+  /**
+    * вызываю феч, гружу, евнт лисинер на хешчанж, фильтрую как получится
+    */
   reviewsCollection.fetch({ timeout: requestFailureTimeout }).success(function(loaded, state, jqXHR) {
     initiallyLoaded = jqXHR.responseJSON;
     window.addEventListener('hashchange', parseURL);

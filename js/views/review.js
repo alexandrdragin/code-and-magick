@@ -113,11 +113,11 @@ define(function() {
       // var clickedElement = evt.target;
 
       // Клик по да/нет, добавляет класс.
-      if (evt.target.classList.contains('review-quiz-answer') && evt.target.contains('Да')) {
+      if (evt.target.classList.contains('review-quiz-answer-yes') {
         this.model.like();
         evt.target.classList.add('clicked');
       }
-      if (evt.target.classList.contains('review-quiz-answer') && evt.target.contains('Нет')) {
+      if (evt.target.classList.contains('review-quiz-answer-no') {
         this.model.dislike();
         evt.target.classList.add('clicked');
       }
