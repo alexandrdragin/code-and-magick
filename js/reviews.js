@@ -175,11 +175,11 @@ define([
       case 'reviews-popular':
         list.sort(function(a, b) {
           if (a['review-rating'] > b['review-rating'] || (b['review-rating'] && a['review-rating'] === 'undefined')) {
-            return 1;
+            return -1;
           }
 
           if (a['review-rating'] < b['review-rating']) {
-            return -1;
+            return 1;
           }
 
           if (a['review-rating'] === b['review-rating']) {
@@ -258,7 +258,7 @@ define([
   function moreReview() {
     reviewMoreButton.addEventListener('click', function() {
       if (isNextPageAvailable()) {
-        loadingReviews(currentPage++, false);
+        loadingReviews((++currentPage), false);
       }
     });
   }
