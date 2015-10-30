@@ -133,7 +133,7 @@ define([
         break;
 
       case 'reviews-good':
-        list.filter(function(a) {
+        list = list.filter(function(a) {
           return a.rating > 3;
         });
         list.sort(function(a, b) {
@@ -153,7 +153,7 @@ define([
         break;
 
       case 'reviews-bad':
-        list.filter(function(a) {
+        list = list.filter(function(a) {
           return a.rating < 3;
         });
         list.sort(function(a, b) {
