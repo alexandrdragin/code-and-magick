@@ -74,8 +74,8 @@ define(function() {
    *  установка времени хранения, запись значения оценки
    *  Запись имени, и сохрание в cookie и отпарвка
    */
-  reviewForm.onsubmit = function(e) {
-    e.preventDefault();
+  reviewForm.onsubmit = function(evt) {
+    evt.preventDefault();
     var now = new Date();
     var exDate = new Date(now.getTime() + (30 * 365 * 60 * 60 * 24000));
 
